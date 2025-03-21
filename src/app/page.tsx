@@ -1,8 +1,10 @@
 export default function Home() {
   return (
-    <section className="text-center py-10">
-      <h1 className="text-4x1 font-bold">Projeto</h1>
-      <p className="text-gray-600 mt-4">Teste</p>
-    </section>
+    <div className="grid grid-cols-[repeat(auto-fit,minmax(250px,1fr))] w-full gap-4 p-4">
+        <div className="bg-purple-500 p-4 rounded-md">Item 1</div>
+        <div className="bg-white p-4 rounded-md">Item 2</div>
+        <div className="bg-white p-4 rounded-md">Item 3</div>
+        <div className="bg-white p-4 rounded-md">Item 4</div>
+    </div>
   );
 }
