@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export default function Home() {
   interface Todo {
@@ -7,12 +7,19 @@ export default function Home() {
     descricao: string;
   }
   const [todo, setTodo] = useState<Todo>({titulo: "", descricao: ""});
+  const lista: Todo[] = [{titulo: "Teste", descricao: "teste 2"}];
+
+  useEffect(() => {
+    {lista.map((e, index) => (
+      <div key={index} className="bg-blue-200 p-4 rounded-md">
+        <p>{e.titulo}</p>
+        <p>{e.descricao}</p>
+      </div>
+    ))}
+  }, [lista]);
+
   return (
     <div className="grid grid-cols-[repeat(auto-fit,minmax(250px,1fr))] w-full gap-4 p-4">
-        <div className="bg-purple-500 p-4 rounded-md">Item 1</div>
-        <div className="bg-white p-4 rounded-md">Item 2</div>
-        <div className="bg-white p-4 rounded-md">Item 3</div>
-        <div className="bg-white p-4 rounded-md">Item 4</div>
         <div className="bg-purple-500 p-4 rounded-md order-2">
           <input type="text" 
           value={todo.titulo}
@@ -24,7 +31,11 @@ export default function Home() {
           />
           <input type="date" />
           <button>X</button>
-          <button onClick={() => console.log(todo)}
+          <button onClick={() => {console.log(lista) 
+              if(todo.titulo != ''){
+                lista.push(todo)
+              }
+            }}
           >V</button>
         </div>
     </div>
