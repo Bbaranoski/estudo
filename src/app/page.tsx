@@ -17,14 +17,15 @@ export default function Home() {
   }
 
   return (
-    <div className="grid grid-cols-[repeat(auto-fit,minmax(250px,1fr))] grid-rows-[repeat(auto-fit,minmax(250,1fr))] w-full gap-3 p-3">
+    <div className="grid grid-cols-[repeat(auto-fit,minmax(300px,1fr))] grid-rows-[repeat(auto-fit,minmax(200px,40vh))] w-full gap-3 p-3">
       {lista.map((e, index) => (
-        <div key={index} className="bg-blue-200 p-4 rounded-md">
-          <p>{e.titulo}</p>
+        <div key={index} className="bg-blue-200 flex flex-col items-center justify-between p-4 rounded-md min-h-[200px]">
+          <h2>{e.titulo}</h2>
           <p>{e.descricao}</p>
+          <p>data</p>
         </div>
       ))}
-        <div className="bg-purple-500 p-4 rounded-md order-2">
+        <div className="bg-purple-500 p-4 rounded-md order-2 min-h-[200px]">
           <input type="text"
             placeholder="Título"
             className="p-2 border rounded mb-2 w-full" 
