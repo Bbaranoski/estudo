@@ -5,14 +5,15 @@ export default function Home() {
   interface Todo {
     titulo: string;
     descricao: string;
+    data: string;
   }
-  const [todo, setTodo] = useState<Todo>({titulo: "", descricao: ""});
-  const [lista, setLista] = useState<Todo[]>([{titulo: "Teste", descricao: "teste 2"}]);
+  const [todo, setTodo] = useState<Todo>({titulo: "", descricao: "", data: ""});
+  const [lista, setLista] = useState<Todo[]>([{titulo: "Teste", descricao: "teste 2", data: "01"}]);
 
   const addTodo = () => {
     if(todo.titulo !== "" && todo.descricao !== "") {
       setLista([...lista, todo]);
-      setTodo({titulo: "", descricao: ""});
+      setTodo({titulo: "", descricao: "", data: ""});
     }
   }
 
@@ -22,25 +23,30 @@ export default function Home() {
         <div key={index} className="bg-blue-200 flex flex-col items-center justify-between p-4 rounded-md min-h-[200px]">
           <h2>{e.titulo}</h2>
           <p>{e.descricao}</p>
-          <p>data</p>
+          <p>{e.data}</p>
         </div>
       ))}
-        <div className="bg-purple-500 p-4 rounded-md order-2 min-h-[200px]">
+        <div className="bg-blue-500 p-4 rounded-md order-2 min-h-[200px]">
           <input type="text"
             placeholder="Título"
             className="p-2 border rounded mb-2 w-full" 
             value={todo.titulo}
             onChange={(e) => setTodo({...todo, titulo: e.target.value})}
           />
-          <input type="text"
-            placeholder="Descrição"
-            className="p-2 border rounded mb-2 w-full"
+          <textarea placeholder="Descrição"
+            className="p-2 border rounded mb-2 w-full min-h-[6rem] resize-none"
             value={todo.descricao}
             onChange={(e) => setTodo({...todo, descricao: e.target.value})}
           />
-          <input type="date" className="p-2 border rounded mb-2 w-full"/>
           <div className="flex gap-2">
             <button className="bg-red-500 text-white px-4 py-2 rounded">X</button>
+            <input type="date" 
+            className="p-2 border rounded mb-2 w-full"
+            value={todo.data}
+            onChange={(e) => {
+              setTodo({...todo, data: e.target.value})
+            }}
+          />
             <button className="bg-green-500 text-white px-4 py-2 rounded"
               onClick={addTodo}
             >V</button>
