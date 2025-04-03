@@ -7,17 +7,19 @@ export default function Home() {
     descricao: string;
     data: string;
   }
-  const [todo, setTodo] = useState<Todo>({titulo: "", descricao: "", data: ""});
-  const [lista, setLista] = useState<Todo[]>([{titulo: "Teste", descricao: "teste 2", data: "01"}]);
+  const [todo, setTodo] = useState<Todo>({titulo: "", descricao: "", data: new Date().toISOString().split("T")[0]});
+  const [lista, setLista] = useState<Todo[]>([{titulo: "Teste", descricao: "teste 2", data: new Date().toISOString().split("T")[0]}]);
   const [aberto, setAberto] = useState<boolean>(false);
 
   function addTodo() {
-    if(todo.titulo !== "" && todo.descricao !== "") {
-      setLista([...lista, todo]);
-      setTodo({titulo: "", descricao: "", data: ""});
-    }
+    setLista([...lista, todo]);
+    setTodo({titulo: "", descricao: "", data: new Date().toISOString().split("T")[0]})
   }
 
+  function removeTodo(index: number) {
+    let listaFiltrada = lista.filter((e, i) => i !== index);
+    setLista(listaFiltrada);
+  }
   return (
     <div className="grid grid-cols-[repeat(auto-fit,minmax(300px,1fr))] grid-rows-[repeat(auto-fit,minmax(200px,40vh))] w-full gap-3 p-3">
 
@@ -25,7 +27,16 @@ export default function Home() {
         <div key={index} className="bg-blue-200 flex flex-col items-center justify-between p-4 rounded-md min-h-[200px]">
           <h2>{e.titulo}</h2>
           <p>{e.descricao}</p>
-          <p>{e.data}</p>
+
+          <div className="flex gap-2">
+            <button className="bg-red-500 text-white p-2 rounded-md"
+            onClick={() => {removeTodo(index)}}
+            >Remover</button>
+            <p>{e.data}</p>
+            <button className="bg-green-500 text-white px-4 py-2 rounded"
+            >faz nada</button>
+          </div>
+          
         </div>
       ))}
 
@@ -55,8 +66,9 @@ export default function Home() {
 
             <div className="flex gap-2">
               <button className="bg-red-500 text-white px-4 py-2 rounded"
-                onClick={() => {setAberto(false)
-                  setTodo({titulo: "", descricao: "", data: ""})
+                onClick={() => {
+                  setTodo({...todo, titulo: "", descricao: "", data: new Date().toISOString().split("T")[0]})
+                  setAberto(false)
                 }}
               >X</button>
 
@@ -70,8 +82,10 @@ export default function Home() {
 
               <button className="bg-green-500 text-white px-4 py-2 rounded"
                 onClick={() => {
-                  addTodo()
-                  setAberto(false);
+                  if(todo.titulo !== "" && todo.descricao !== "" && todo.data !== "") {
+                    addTodo()
+                    setAberto(false);
+                  }
                 }}
               >V</button>
             </div>
