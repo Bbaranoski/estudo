@@ -6,6 +6,7 @@ export default function Navbar() {
             <h1 className="text-x1 font-bold">ToDo</h1>
             <div className="space-x-4 flex gap-4">
                 <Link href="/">Início</Link>
+                <Link href="/dashboard">Sobre</Link>
             </div>
         </nav>
     )
