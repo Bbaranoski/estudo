@@ -57,17 +57,19 @@ export default function Home() {
     <div className="grid grid-cols-[repeat(auto-fit,minmax(300px,1fr))] grid-rows-[repeat(auto-fit,minmax(200px,40vh))] w-full gap-3 p-3">
 
       {lista.map((e, index) => (
-        <div key={index} className="bg-blue-200 flex flex-col items-center justify-between p-4 rounded-md max-w-[700px] min-h-[200px] ">
-          <h2>{e.titulo}</h2>
-          <p>{e.descricao}</p>
+        <div key={index} className="bg-blue-200 flex flex-col items-center justify-between p-4 rounded-md lg:max-w-[49vw] sg:max-w-[90vw] min-h-[200px] ">
+          <h2 className="font-bold"
+          >{e.titulo}</h2>
+          <p className="whitespace-pre-wrap break-words"
+          >{e.descricao}</p>
 
           <div className="flex gap-2">
-            <button className="bg-red-500 text-white p-2 rounded-md min-w-[75px]"
+            <button className="bg-red-500 hover:bg-red-600 text-white p-2 rounded-md min-w-[75px]"
               onClick={() => {removeTodo(index)}}
             >Remover</button>
-            <p className="flex items-center justify-center"
-            >{e.data}</p>
-            <button className="bg-green-500 text-white px-4 py-2 rounded min-w-[75px]"
+            <p className="flex items-center justify-center text-xl"
+            >{new Date(e.data).toLocaleDateString('pt-BR')}</p>
+            <button className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded min-w-[75px]"
               onClick={() => {editaTodo(index)}}
             >Editar</button>
           </div>
@@ -75,7 +77,7 @@ export default function Home() {
         </div>
       ))}
 
-      <button className="fixed bottom-4 right-4 bg-blue-500 text-white p-4 rounded-full shadow-lg" 
+      <button className="fixed bottom-4 right-4 bg-blue-500 hover:bg-blue-600 text-white p-4 rounded-full shadow-lg" 
         onClick={() => setAberto(true)}
       >+</button>
 
@@ -94,13 +96,14 @@ export default function Home() {
             <textarea className="p-2 border rounded mb-2 w-full min-h-[6rem] resize-none"
               placeholder="Descrição"
               value={todo.descricao}
+              maxLength={150}
               onChange={(e) => 
                 setTodo({...todo, descricao: e.target.value}) 
               }
             />
 
             <div className="flex gap-2">
-              <button className="bg-red-500 text-white px-4 py-2 rounded"
+              <button className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded"
                 onClick={() => {
                   setTodo({...todo, titulo: "", descricao: "", data: new Date().toISOString().split("T")[0]})
                   setAberto(false)
@@ -116,7 +119,7 @@ export default function Home() {
                 }}
               />
 
-              <button className="bg-green-500 text-white px-4 py-2 rounded"
+              <button className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded"
                 onClick={() => {
                   if(edita.alterar == false) {
                     addTodo()
