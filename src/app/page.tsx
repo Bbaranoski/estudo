@@ -54,24 +54,32 @@ export default function Home() {
     setErro("")
   }
   return (
-    <div className="grid grid-cols-[repeat(auto-fit,minmax(300px,1fr))] grid-rows-[repeat(auto-fit,minmax(200px,40vh))] w-full gap-3 p-3">
+    <div className="grid sm:grid-cols-[repeat(auto-fit,minmax(300px,1fr))] lg:grid-cols-[repeat(auto-fit,minmax(300px,1fr))] grid-rows-[repeat(auto-fit,minmax(200px,40vh))] w-full gap-3 p-3">
 
       {lista.map((e, index) => (
-        <div key={index} className="bg-blue-200 flex flex-col items-center justify-between p-4 rounded-md lg:max-w-[49vw] sg:max-w-[90vw] min-h-[200px] ">
+        <div key={index} className="bg-blue-200 flex flex-col items-center justify-between p-4 rounded-md min-h-[200px]">
           <h2 className="font-bold"
           >{e.titulo}</h2>
           <p className="whitespace-pre-wrap break-words"
           >{e.descricao}</p>
 
-          <div className="flex gap-2">
-            <button className="bg-red-500 hover:bg-red-600 text-white p-2 rounded-md min-w-[75px]"
+          <div className="flex justify-between w-full">
+            <button className="bg-red-500 hover:bg-red-600 text-white p-3 rounded-md min-w-[50px] flex items-center justify-center"
               onClick={() => {removeTodo(index)}}
-            >Remover</button>
+            ><img
+              src="/icons/trash.png" 
+              alt="Remover" 
+              width={20}/></button>
+
             <p className="flex items-center justify-center text-xl"
             >{new Date(e.data).toLocaleDateString('pt-BR')}</p>
-            <button className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded min-w-[75px]"
+
+            <button className="bg-green-500 hover:bg-green-600 text-white p-3 rounded min-w-[50px] flex items-center justify-center"
               onClick={() => {editaTodo(index)}}
-            >Editar</button>
+            ><img
+            src="/icons/pencil.png" 
+            alt="Remover" 
+            width={20}/></button>
           </div>
           
         </div>
