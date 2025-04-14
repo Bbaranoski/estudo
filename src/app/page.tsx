@@ -56,101 +56,104 @@ export default function Home() {
 
   const teste = 1
   return (
-    <div className={`grid w-full gap-3 p-3 
-      sm:grid-cols-[repeat(auto-fit,minmax(300px,1fr))] 
-      grid-rows-[repeat(auto-fit,minmax(200px,40vh))] 
-      ${
-        lista.length <= 2
-        ? "lg:grid-cols-[repeat(auto-fit,minmax(300px,32vw))]" 
-        : "lg:grid-cols-[repeat(auto-fit,minmax(300px,1fr))]"
-      }`}
-    >
+    <div className="flex flex-col items-center w-full h-full">
+      <div className="flex gap-2 w-full justify-end p-3">
+      <button className="bg-green-500 hover:bg-green-600 text-white p-4 rounded-full shadow-lg" 
+          onClick={() => setAberto(true)}
+        >Adicionar+</button>
+      </div>
+      <div className={`grid w-full gap-3 p-3 
+        sm:grid-cols-[repeat(auto-fit,minmax(300px,1fr))] 
+        grid-rows-[repeat(auto-fit,minmax(200px,40vh))] 
+        ${
+          lista.length <= 2
+          ? "lg:grid-cols-[repeat(auto-fit,minmax(300px,32vw))]" 
+          : "lg:grid-cols-[repeat(auto-fit,minmax(300px,1fr))]"
+        }`}
+      >
 
-      {lista.map((e, index) => (
-        <div key={index} className="bg-white flex flex-col items-center justify-between p-4 rounded-md min-h-[200px]">
-          <h2 className="font-bold"
-          >{e.titulo}</h2>
-          <p className="whitespace-pre-wrap break-words p-2"
-          >{e.descricao}</p>
+        {lista.map((e, index) => (
+          <div key={index} className="bg-white flex flex-col items-center justify-between p-4 rounded-md min-h-[200px]">
+            <h2 className="font-bold text-[clamp(1rem,1.5vw,2rem)]"
+            >{e.titulo}</h2>
 
-          <div className="flex justify-between w-full">
-            <button className="bg-red-400 hover:bg-red-500 text-white p-[8px] rounded-md min-w-[50px] flex items-center justify-center"
-              onClick={() => {removeTodo(index)}}
-            ><img
-              src="/icons/trash.png" 
+            <div className="flex justify-center w-full">
+              <button className="bg-red-500 hover:bg-red-600 text-white p-[8px] rounded-md min-w-[50px] flex items-center justify-center"
+                onClick={() => {removeTodo(index)}}
+              ><img
+                src="/icons/trash.png" 
+                alt="Remover" 
+                width={20}/></button>
+
+              <p className="flex items-center justify-center text-xl text-[clamp(0.75rem,1.2vw,1.5rem)]"
+              >{new Date(e.data).toLocaleDateString('pt-BR')}</p>
+
+              <button className="bg-blue-500 hover:bg-blue-600 text-white p-[8px] rounded min-w-[50px] flex items-center justify-center"
+                onClick={() => {editaTodo(index)}}
+              ><img
+              src="/icons/pencil.png" 
               alt="Remover" 
               width={20}/></button>
-
-            <p className="flex items-center justify-center text-xl"
-            >{new Date(e.data).toLocaleDateString('pt-BR')}</p>
-
-            <button className="bg-blue-300 hover:bg-blue-400 text-white p-[8px] rounded min-w-[50px] flex items-center justify-center"
-              onClick={() => {editaTodo(index)}}
-            ><img
-            src="/icons/pencil.png" 
-            alt="Remover" 
-            width={20}/></button>
+            </div>
+            <p className="whitespace-pre-wrap break-words p-2 text-[clamp(0.75rem,1.2vw,1.5rem)]"
+            >{e.descricao}</p>
+            
           </div>
-          
-        </div>
-      ))}
+        ))}
 
-      <button className="fixed bottom-4 right-4 bg-blue-500 hover:bg-blue-600 text-white p-4 rounded-full shadow-lg" 
-        onClick={() => setAberto(true)}
-      >+</button>
-
-      {aberto && (
-        <div className="fixed inset-0 bg-black/50 flex justify-center items-center">
-          <div className="bg-blue-500 p-6 rounded-lg shadow-lg w-96">
-            <input className="p-2 border rounded mb-2 w-full"
-              type="text"
-              placeholder="Título"
-              value={todo.titulo}
-              maxLength={20}
-              onChange={(e) => 
-                setTodo({...todo, titulo: e.target.value})
-              }
-            />
-            <textarea className="p-2 border rounded mb-2 w-full min-h-[6rem] resize-none"
-              placeholder="Descrição"
-              value={todo.descricao}
-              maxLength={150}
-              onChange={(e) => 
-                setTodo({...todo, descricao: e.target.value}) 
-              }
-            />
-
-            <div className="flex gap-2">
-              <button className="bg-red-500 hover:bg-red-600 text-white p-[8px] rounded-md min-w-[50px] flex items-center justify-center"
-                onClick={() => {
-                  setTodo({...todo, titulo: "", descricao: "", data: new Date().toISOString().split("T")[0]})
-                  setAberto(false)
-                  setErro("")
-                }}
-              >X</button>
-
+        {aberto && (
+          <div className="fixed inset-0 bg-black/50 flex justify-center items-center">
+            <div className="bg-blue-500 p-6 rounded-lg shadow-lg w-96">
               <input className="p-2 border rounded mb-2 w-full"
-                type="date" 
-                value={todo.data}
-                onChange={(e) => {
-                  setTodo({...todo, data: e.target.value})
-                }}
+                type="text"
+                placeholder="Título"
+                value={todo.titulo}
+                maxLength={20}
+                onChange={(e) => 
+                  setTodo({...todo, titulo: e.target.value})
+                }
+              />
+              <textarea className="p-2 border rounded mb-2 w-full min-h-[6rem] resize-none"
+                placeholder="Descrição"
+                value={todo.descricao}
+                maxLength={150}
+                onChange={(e) => 
+                  setTodo({...todo, descricao: e.target.value}) 
+                }
               />
 
-              <button className="bg-green-500 hover:bg-green-600 text-white p-[8px] rounded-md min-w-[50px] flex items-center justify-center"
-                onClick={() => {
-                  if(edita.alterar == false) {
-                    addTodo()
-                  }else if(edita.alterar == true) {
-                    editar()
-                  }
-                }}
-              >V</button>
+              <div className="flex gap-2">
+                <button className="bg-red-500 hover:bg-red-600 text-white p-[8px] rounded-md min-w-[50px] flex items-center justify-center"
+                  onClick={() => {
+                    setTodo({...todo, titulo: "", descricao: "", data: new Date().toISOString().split("T")[0]})
+                    setAberto(false)
+                    setErro("")
+                  }}
+                >X</button>
+
+                <input className="p-2 border rounded mb-2 w-full"
+                  type="date" 
+                  value={todo.data}
+                  onChange={(e) => {
+                    setTodo({...todo, data: e.target.value})
+                  }}
+                />
+
+                <button className="bg-green-500 hover:bg-green-600 text-white p-[8px] rounded-md min-w-[50px] flex items-center justify-center"
+                  onClick={() => {
+                    if(edita.alterar == false) {
+                      addTodo()
+                    }else if(edita.alterar == true) {
+                      editar()
+                    }
+                  }}
+                >V</button>
+              </div>
+              {erro && <p className="text-red-500 text-sm mb-2 justify-self-center">{erro}</p>}
             </div>
-            {erro && <p className="text-red-500 text-sm mb-2 justify-self-center">{erro}</p>}
           </div>
-        </div>
-      )}
+        )}
+      </div>
     </div>
   );
 }
