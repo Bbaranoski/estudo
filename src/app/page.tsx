@@ -62,41 +62,53 @@ export default function Home() {
           onClick={() => setAberto(true)}
         >Adicionar+</button>
       </div>
+
       <div className={`grid w-full gap-3 p-3 
         sm:grid-cols-[repeat(auto-fit,minmax(300px,1fr))] 
         grid-rows-[repeat(auto-fit,minmax(200px,40vh))] 
         ${
-          lista.length <= 2
-          ? "lg:grid-cols-[repeat(auto-fit,minmax(300px,32vw))]" 
+          lista.length <= 3
+          ? "lg:grid-cols-[repeat(auto-fit,minmax(300px,20vw))]" 
           : "lg:grid-cols-[repeat(auto-fit,minmax(300px,1fr))]"
         }`}
       >
 
         {lista.map((e, index) => (
-          <div key={index} className="bg-white flex flex-col items-center justify-between p-4 rounded-md min-h-[200px]">
-            <h2 className="font-bold text-[clamp(1rem,1.5vw,2rem)]"
-            >{e.titulo}</h2>
+          <div key={index} className="bg-white flex flex-col items-start justify-start gap-2 rounded-md min-h-[200px] shadow-lg">
+            <div className="flex justify-end w-full">
 
-            <div className="flex justify-center w-full">
-              <button className="bg-red-500 hover:bg-red-600 text-white p-[8px] rounded-md min-w-[50px] flex items-center justify-center"
-                onClick={() => {removeTodo(index)}}
-              ><img
-                src="/icons/trash.png" 
+              <button className="hover:bg-gray-100 text-white p-[8px] rounded-lg min-w-[10px] flex items-center justify-center"
+                  onClick={() => {removeTodo(index)}}
+                ><img
+                  src="/icons/trash.png" 
+                  alt="Remover" 
+                  width={17}/>
+              </button>
+
+              <button className="hover:bg-gray-100 text-white p-[8px] rounded-lg min-w-[10px] flex items-center justify-center"
+                  onClick={() => {editaTodo(index)}}
+                ><img
+                src="/icons/pencil.png" 
                 alt="Remover" 
-                width={20}/></button>
+                width={17}/></button>
+              </div>
 
-              <p className="flex items-center justify-center text-xl text-[clamp(0.75rem,1.2vw,1.5rem)]"
-              >{new Date(e.data).toLocaleDateString('pt-BR')}</p>
+            <div/>
 
-              <button className="bg-blue-500 hover:bg-blue-600 text-white p-[8px] rounded min-w-[50px] flex items-center justify-center"
-                onClick={() => {editaTodo(index)}}
-              ><img
-              src="/icons/pencil.png" 
-              alt="Remover" 
-              width={20}/></button>
+            <div className="flex flex-col gap-3 w-full pl-6 pr-6">
+              <h2 className="font-bold text-[clamp(1rem,1.5vw,2rem)]"
+              >{e.titulo}</h2>
+
+              <div className="flex justify-start w-full">
+                
+                <p className="flex text-neutral-500 items-center justify-center text-xl text-[clamp(0.75rem,1.1vw,1.5rem)]"
+                >{new Date(e.data).toLocaleDateString('pt-BR')}</p>
+
+              </div>
+
+              <p className="whitespace-pre-wrap break-words text-[clamp(0.75rem,1vw,1.5rem)] h-full"
+              >{e.descricao}</p>
             </div>
-            <p className="whitespace-pre-wrap break-words p-2 text-[clamp(0.75rem,1.2vw,1.5rem)]"
-            >{e.descricao}</p>
             
           </div>
         ))}
