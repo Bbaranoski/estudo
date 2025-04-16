@@ -65,16 +65,16 @@ export default function Home() {
 
       <div className={`grid w-full gap-3 p-3 
         sm:grid-cols-[repeat(auto-fit,minmax(300px,1fr))] 
-        grid-rows-[repeat(auto-fit,minmax(200px,40vh))] 
+        grid-rows-[repeat(auto-fit,minmax(200px,35vh))] 
         ${
-          lista.length <= 3
-          ? "lg:grid-cols-[repeat(auto-fit,minmax(300px,20vw))]" 
-          : "lg:grid-cols-[repeat(auto-fit,minmax(300px,1fr))]"
+          lista.length <= 4
+          ? "lg:grid-cols-[repeat(auto-fit,minmax(200px,18vw))]" 
+          : "lg:grid-cols-[repeat(auto-fit,minmax(200px,1fr))]"
         }`}
       >
 
         {lista.map((e, index) => (
-          <div key={index} className="bg-white flex flex-col items-start justify-start gap-2 rounded-md min-h-[200px] shadow-lg">
+          <div key={index} className="bg-white flex flex-col items-start justify-start rounded-md min-h-[200px] shadow-lg">
             <div className="flex justify-end w-full">
 
               <button className="hover:bg-gray-100 text-white p-[8px] rounded-lg min-w-[10px] flex items-center justify-center"
@@ -120,7 +120,7 @@ export default function Home() {
                 type="text"
                 placeholder="Título"
                 value={todo.titulo}
-                maxLength={20}
+                maxLength={18}
                 onChange={(e) => 
                   setTodo({...todo, titulo: e.target.value})
                 }
@@ -128,7 +128,7 @@ export default function Home() {
               <textarea className="p-2 border rounded mb-2 w-full min-h-[6rem] resize-none"
                 placeholder="Descrição"
                 value={todo.descricao}
-                maxLength={150}
+                maxLength={120}
                 onChange={(e) => 
                   setTodo({...todo, descricao: e.target.value}) 
                 }
