@@ -16,6 +16,7 @@ export default function Home() {
   const [aberto, setAberto] = useState<boolean>(false)
   const [edita, setEdita] = useState<Edita>({index: 0, alterar: false})
   const [erro, setErro] = useState<string>("")
+  const [windwoWidth, setWindwoWidth] = useState(0)
 
   function addTodo() {
     if (todo.titulo.trim() === "" || todo.descricao.trim() === "") {
@@ -54,7 +55,13 @@ export default function Home() {
     setErro("")
   }
 
-  const teste = 1
+  useEffect(() => {
+    setWindwoWidth(window.innerWidth)
+    const handleResize = () => setWindwoWidth(window.innerWidth)
+    window.addEventListener("resize", handleResize)
+    return () => window.removeEventListener("resize", handleResize)
+  }, [])
+
   return (
     <div className="flex flex-col items-center w-full h-full">
       <div className="flex gap-2 w-full justify-end p-3">
@@ -64,14 +71,18 @@ export default function Home() {
       </div>
 
       <div className={`grid w-full gap-3 p-3 
-        sm:grid-cols-[repeat(auto-fit,minmax(300px,1fr))] 
-        grid-rows-[repeat(auto-fit,minmax(200px,35vh))] 
+        grid-rows-[repeat(auto-fit,minmax(200px,35vh))]
         ${
-          lista.length <= 4
-          ? "lg:grid-cols-[repeat(auto-fit,minmax(200px,18vw))]" 
-          : "lg:grid-cols-[repeat(auto-fit,minmax(200px,1fr))]"
-        }`}
-      >
+          windwoWidth <= 425
+          ? "grid-cols-[repeat(auto-fit,minmax(300px,1fr))]" 
+          : windwoWidth <= 864
+            ? lista.length <= 2
+              ? "grid-cols-[repeat(auto-fit,minmax(200px,18vw))]"
+              : "grid-cols-[repeat(auto-fit,minmax(200px,1fr))]"
+            : lista.length <= 4
+              ? "grid-cols-[repeat(auto-fit,minmax(200px,18vw))]" 
+              : "grid-cols-[repeat(auto-fit,minmax(200px,1fr))]"}
+      `}>
 
         {lista.map((e, index) => (
           <div key={index} className="bg-white flex flex-col items-start justify-start rounded-md min-h-[200px] shadow-lg">
@@ -140,6 +151,7 @@ export default function Home() {
                     setTodo({...todo, titulo: "", descricao: "", data: new Date().toISOString().split("T")[0]})
                     setAberto(false)
                     setErro("")
+                    setEdita({index: 0, alterar: false})
                   }}
                 >X</button>
 
