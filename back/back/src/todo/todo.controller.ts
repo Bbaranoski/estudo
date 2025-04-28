@@ -6,14 +6,13 @@ export class TodoController {
     constructor(private readonly todoService: TodoService) {}
 
     @Post()
-    create(@Body("titulo") titulo: string) {
-        return this.todoService.create(titulo)
+    create(@Body() data: {titulo: string, descricao: string, data: string}) {
+        return this.todoService.create(data)
     }
 
     @Get()
     findAll() {
-        return "teste11111"
-        //return this.todoService.findAll()
+        return this.todoService.findAll()
     }
 
     @Delete(":id")

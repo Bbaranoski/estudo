@@ -5,13 +5,9 @@ import { PrismaService } from "./prisma.service"
 export class TodoService {
     constructor(private prisma: PrismaService) {}
 
-    async create(titulo: string) {
+    async create(data: {titulo: string, descricao: string, data: string}) {
         return this.prisma.todo.create({
-            data: {
-                titulo: titulo,
-                descricao: "teste",
-                data: "teste2"
-            },
+            data,
         })
     }
 
@@ -22,6 +18,13 @@ export class TodoService {
     async delete(id: number) {
         return this.prisma.todo.delete({
             where: {id},
+        })
+    }
+
+    async update(id:number, data: {titulo?: string, descricao?: string, data?: string}) {
+        return this.prisma.todo.update({
+            where: {id},
+            data,
         })
     }
 }
