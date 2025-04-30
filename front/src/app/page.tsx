@@ -1,16 +1,19 @@
 "use client";
 import { useState, useEffect } from "react";
+import api from "@/services/api";
+
+interface Todo {
+  titulo: string
+  descricao: string
+  data: string
+}
+interface Edita {
+  index: number
+  alterar: boolean
+}
 
 export default function Home() {
-  interface Todo {
-    titulo: string
-    descricao: string
-    data: string
-  }
-  interface Edita {
-    index: number
-    alterar: boolean
-  }
+
   const [todo, setTodo] = useState<Todo>({titulo: "", descricao: "", data: new Date().toISOString().split("T")[0]})
   const [lista, setLista] = useState<Todo[]>([{titulo: "Teste", descricao: "teste 2", data: new Date().toISOString().split("T")[0]}])
   const [aberto, setAberto] = useState<boolean>(false)
@@ -61,6 +64,17 @@ export default function Home() {
     window.addEventListener("resize", handleResize)
     return () => window.removeEventListener("resize", handleResize)
   }, [])
+
+  const submit = async (e: React.FormEvent) => {
+    e.preventDefault()
+
+    try {
+      const response = await api.post("/todos", todo)
+      console.log("feito cria", response.data)
+    } catch (error) {
+      console.error("deu ruim cria", error)
+    }
+  }
 
   return (
     <div className="flex flex-col items-center w-full h-full">
@@ -126,7 +140,9 @@ export default function Home() {
 
         {aberto && (
           <div className="fixed inset-0 bg-black/50 flex justify-center items-center">
-            <div className="bg-blue-500 p-6 rounded-lg shadow-lg w-96">
+            <form className="bg-blue-500 p-6 rounded-lg shadow-lg w-96"
+            onSubmit={submit}
+            >
               <input className="p-2 border rounded mb-2 w-full"
                 type="text"
                 placeholder="Título"
@@ -135,6 +151,7 @@ export default function Home() {
                 onChange={(e) => 
                   setTodo({...todo, titulo: e.target.value})
                 }
+                required
               />
               <textarea className="p-2 border rounded mb-2 w-full min-h-[6rem] resize-none"
                 placeholder="Descrição"
@@ -143,6 +160,7 @@ export default function Home() {
                 onChange={(e) => 
                   setTodo({...todo, descricao: e.target.value}) 
                 }
+                required
               />
 
               <div className="flex gap-2">
@@ -161,20 +179,22 @@ export default function Home() {
                   onChange={(e) => {
                     setTodo({...todo, data: e.target.value})
                   }}
+                  required
                 />
 
                 <button className="bg-green-500 hover:bg-green-600 text-white p-[8px] rounded-md min-w-[50px] flex items-center justify-center"
+                  type="submit"
                   onClick={() => {
                     if(edita.alterar == false) {
-                      addTodo()
+
                     }else if(edita.alterar == true) {
-                      editar()
+
                     }
                   }}
                 >V</button>
               </div>
               {erro && <p className="text-red-500 text-sm mb-2 justify-self-center">{erro}</p>}
-            </div>
+            </form>
           </div>
         )}
       </div>
