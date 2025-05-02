@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import api from "@/services/api";
 
 interface Todo {
+  id: number
   titulo: string
   descricao: string
   data: string
@@ -14,50 +15,21 @@ interface Edita {
 
 export default function Home() {
 
-  const [todo, setTodo] = useState<Todo>({titulo: "", descricao: "", data: new Date().toISOString().split("T")[0]})
-  const [lista, setLista] = useState<Todo[]>([{titulo: "Teste", descricao: "teste 2", data: new Date().toISOString().split("T")[0]}])
+  const [todo, setTodo] = useState<Todo>({id: 0, titulo: "", descricao: "", data: new Date().toISOString().split("T")[0]})
+  const [lista, setLista] = useState<Todo[]>([])
   const [aberto, setAberto] = useState<boolean>(false)
   const [edita, setEdita] = useState<Edita>({index: 0, alterar: false})
   const [erro, setErro] = useState<string>("")
   const [windwoWidth, setWindwoWidth] = useState(0)
 
-  function addTodo() {
-    if (todo.titulo.trim() === "" || todo.descricao.trim() === "") {
-      setErro("Preencha todos os campos!")
-      return
-    }
-    setLista([...lista, todo]);
-    setTodo({titulo: "", descricao: "", data: new Date().toISOString().split("T")[0]})
-    setAberto(false)
-    setErro("")
-  }
-
-  function removeTodo(index: number) {
-    let listaFiltrada = lista.filter((e, i) => i !== index);
-    setLista(listaFiltrada)
-  }
-
   function editaTodo(index: number){
     const alteraObj: Todo = lista[index]
-    setTodo({titulo: alteraObj.titulo, descricao: alteraObj.descricao, data: alteraObj.data})
+    setTodo({id: alteraObj.id, titulo: alteraObj.titulo, descricao: alteraObj.descricao, data: alteraObj.data})
     setEdita({index: index, alterar: true})
     setAberto(true)
   }
 
-  function editar(){
-    if (todo.titulo.trim() === "" || todo.descricao.trim() === "") {
-      setErro("Preencha todos os campos!")
-      return
-    }
-    let listaAlterada = lista
-    listaAlterada[edita.index] = todo
-    setLista(listaAlterada)
-    setTodo({titulo: "", descricao: "", data: new Date().toISOString().split("T")[0]})
-    setEdita({index: 0, alterar: false})
-    setAberto(false)
-    setErro("")
-  }
-
+  // cria variavel do tamanho da tela para utilizar em breakpoints
   useEffect(() => {
     setWindwoWidth(window.innerWidth)
     const handleResize = () => setWindwoWidth(window.innerWidth)
@@ -65,17 +37,63 @@ export default function Home() {
     return () => window.removeEventListener("resize", handleResize)
   }, [])
 
-  const submit = async (e: React.FormEvent) => {
+  // submit do form
+  const submit = (e: React.FormEvent) => {
     e.preventDefault()
-
+    if(edita.alterar == false){
+      handleSubmit()
+      setAberto(false)
+    } else {
+      handeleUpdate(todo.id, todo)
+      setAberto(false)
+    }
+  }
+  // faz o crete para o back-end
+  const handleSubmit = async () => {
     try {
       const response = await api.post("/todos", todo)
-      console.log("feito cria", response.data)
+      fetchTodo()
     } catch (error) {
       console.error("deu ruim cria", error)
     }
   }
 
+  // faz o get do back-end
+  const fetchTodo = async () => {
+    try {
+      const response = await api.get("/todos")
+      setLista(response.data)
+      setTodo({id: 0, titulo: "", descricao: "", data: new Date().toISOString().split("T")[0]})
+      setAberto(false)
+    } catch (error) {
+      console.error("deu ruim", error)
+    }
+  }
+
+  useEffect(() => {
+    fetchTodo()
+  },[])
+
+  // faz o delete para o back-end
+  const handleDelete = async (id: number) => {
+    try {
+      await api.delete(`/todos/${id}`)
+      fetchTodo()
+    } catch (error) {
+      console.error("deu ruim", error)
+    }
+  }
+  
+  // faz o patch para o back-end
+  const handeleUpdate = async (id: number, data: {titulo?: string, descricao?: string, data?: string}) => {
+    try {
+      await api.patch(`/todos/${id}`, data)
+      setEdita({index: 0, alterar: false})
+      fetchTodo()
+    } catch (error) {
+      console.error("deu ruim", error)
+    }
+  }
   return (
     <div className="flex flex-col items-center w-full h-full">
       <div className="flex gap-2 w-full justify-end p-3">
@@ -103,7 +121,7 @@ export default function Home() {
             <div className="flex justify-end w-full">
 
               <button className="hover:bg-gray-100 text-white p-[8px] rounded-lg min-w-[10px] flex items-center justify-center"
-                  onClick={() => {removeTodo(index)}}
+                  onClick={() => {handleDelete(e.id)}}
                 ><img
                   src="/icons/trash.png" 
                   alt="Remover" 
@@ -141,7 +159,9 @@ export default function Home() {
         {aberto && (
           <div className="fixed inset-0 bg-black/50 flex justify-center items-center">
             <form className="bg-blue-500 p-6 rounded-lg shadow-lg w-96"
-            onSubmit={submit}
+            onSubmit={
+              submit
+            }
             >
               <input className="p-2 border rounded mb-2 w-full"
                 type="text"
@@ -184,16 +204,8 @@ export default function Home() {
 
                 <button className="bg-green-500 hover:bg-green-600 text-white p-[8px] rounded-md min-w-[50px] flex items-center justify-center"
                   type="submit"
-                  onClick={() => {
-                    if(edita.alterar == false) {
-
-                    }else if(edita.alterar == true) {
-
-                    }
-                  }}
                 >V</button>
               </div>
-              {erro && <p className="text-red-500 text-sm mb-2 justify-self-center">{erro}</p>}
             </form>
           </div>
         )}
