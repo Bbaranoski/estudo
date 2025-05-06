@@ -19,7 +19,6 @@ export default function Home() {
   const [lista, setLista] = useState<Todo[]>([])
   const [aberto, setAberto] = useState<boolean>(false)
   const [edita, setEdita] = useState<Edita>({index: 0, alterar: false})
-  const [erro, setErro] = useState<string>("")
   const [windwoWidth, setWindwoWidth] = useState(0)
 
   function editaTodo(index: number){
@@ -139,7 +138,7 @@ export default function Home() {
             <div/>
 
             <div className="flex flex-col gap-3 w-full pl-6 pr-6">
-              <h2 className="font-bold text-[clamp(1rem,1.5vw,2rem)]"
+              <h2 className="text-black font-bold text-[clamp(1rem,1.5vw,2rem)]"
               >{e.titulo}</h2>
 
               <div className="flex justify-start w-full">
@@ -149,7 +148,7 @@ export default function Home() {
 
               </div>
 
-              <p className="whitespace-pre-wrap break-words text-[clamp(0.75rem,1vw,1.5rem)] h-full"
+              <p className="text-black whitespace-pre-wrap break-words text-[clamp(0.75rem,1vw,1.5rem)] h-full"
               >{e.descricao}</p>
             </div>
             
@@ -167,28 +166,31 @@ export default function Home() {
                 type="text"
                 placeholder="Título"
                 value={todo.titulo}
-                maxLength={18}
-                onChange={(e) => 
-                  setTodo({...todo, titulo: e.target.value})
-                }
+                maxLength={11}
+                onChange={(e) => {
+                  const temp = e.target.value.toUpperCase().replace(/\n/g, "")
+                  setTodo({...todo, titulo: temp})
+                }}
                 required
               />
               <textarea className="p-2 border rounded mb-2 w-full min-h-[6rem] resize-none"
                 placeholder="Descrição"
                 value={todo.descricao}
-                maxLength={120}
-                onChange={(e) => 
-                  setTodo({...todo, descricao: e.target.value}) 
-                }
+                maxLength={83}
+                onChange={(e) => {
+                  const temp = e.target.value.replace(/\n/g,"")
+                  const temp2 = temp.charAt(0).toUpperCase() + temp.slice(1).toLowerCase()
+                  setTodo({...todo, descricao: temp2}) 
+                }}
                 required
               />
 
               <div className="flex gap-2">
                 <button className="bg-red-500 hover:bg-red-600 text-white p-[8px] rounded-md min-w-[50px] flex items-center justify-center"
+                  type="button"
                   onClick={() => {
                     setTodo({...todo, titulo: "", descricao: "", data: new Date().toISOString().split("T")[0]})
                     setAberto(false)
-                    setErro("")
                     setEdita({index: 0, alterar: false})
                   }}
                 >X</button>
