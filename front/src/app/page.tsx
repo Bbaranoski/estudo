@@ -20,7 +20,9 @@ export default function Home() {
   const [aberto, setAberto] = useState<boolean>(false)
   const [edita, setEdita] = useState<Edita>({index: 0, alterar: false})
   const [windwoWidth, setWindwoWidth] = useState(0)
+  const [filtro, setFiltro] = useState<boolean>(true)
 
+  // função que pega o objeto da array para ser editado
   function editaTodo(index: number){
     const alteraObj: Todo = lista[index]
     setTodo({id: alteraObj.id, titulo: alteraObj.titulo, descricao: alteraObj.descricao, data: alteraObj.data})
@@ -59,8 +61,9 @@ export default function Home() {
 
   // faz o get do back-end
   const fetchTodo = async () => {
+    console.log(filtro)
     try {
-      const response = await api.get("/todos")
+      const response = await api.get(`/todos?ordem=${filtro ? "asc" : "desc"}`)
       setLista(response.data)
       setTodo({id: 0, titulo: "", descricao: "", data: new Date().toISOString().split("T")[0]})
       setAberto(false)
@@ -95,9 +98,16 @@ export default function Home() {
   }
   return (
     <div className="flex flex-col items-center w-full h-full">
-      <div className="flex gap-2 w-full justify-end p-3">
-      <button className="bg-green-500 hover:bg-green-600 text-white p-4 rounded-full shadow-lg" 
-          onClick={() => setAberto(true)}
+      <div className="flex gap-2 w-full justify-between p-3">
+        <button className="hover:bg-gray-300 text-black p-4 rounded-lg font-bold" 
+          onClick={() => {
+            setFiltro(!filtro) 
+            fetchTodo()
+          }}
+        >ID
+        </button>
+        <button className="bg-green-500 hover:bg-green-600 text-white p-4 rounded-full shadow-lg" 
+          onClick={() => {setAberto(true)}}
         >Adicionar+</button>
       </div>
 

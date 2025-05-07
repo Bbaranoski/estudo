@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Delete, Param, Patch, UsePipes, ValidationPipe } from "@nestjs/common"
+import { Controller, Get, Post, Body, Delete, Param, Patch, UsePipes, ValidationPipe, Query } from "@nestjs/common"
 import { TodoService } from "./todo.services"
 import { CreateTodoDto } from "./dto/create-todo.dto"
 import { UpdateTodoDto } from "./dto/update-todo.dto"
@@ -14,8 +14,8 @@ export class TodoController {
     }
 
     @Get()
-    findAll() {
-        return this.todoService.findAll()
+    findAll(@Query('ordem') ordem: 'asc' | 'desc' = 'asc') {
+        return this.todoService.findAll(ordem)
     }
 
     @Delete(":id")

@@ -11,8 +11,12 @@ export class TodoService {
         })
     }
 
-    async findAll() {
-        return this.prisma.todo.findMany()
+    async findAll(ordem: 'asc' | 'desc' = 'asc') {
+        return this.prisma.todo.findMany({
+            orderBy: {
+                id: ordem,
+            },
+        })
     }
 
     async delete(id: number) {
