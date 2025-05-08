@@ -20,7 +20,7 @@ export default function Home() {
   const [aberto, setAberto] = useState<boolean>(false)
   const [edita, setEdita] = useState<Edita>({index: 0, alterar: false})
   const [windwoWidth, setWindwoWidth] = useState(0)
-  const [filtro, setFiltro] = useState<boolean>(true)
+  const [filtro, setFiltro] = useState<Todo>({id: 0, titulo: "", descricao: "", data: new Date().toISOString().split("T")[0]})
 
   // função que pega o objeto da array para ser editado
   function editaTodo(index: number){
@@ -61,9 +61,8 @@ export default function Home() {
 
   // faz o get do back-end
   const fetchTodo = async () => {
-    console.log(filtro)
     try {
-      const response = await api.get(`/todos?ordem=${filtro ? "asc" : "desc"}`)
+      const response = await api.get("/todos")
       setLista(response.data)
       setTodo({id: 0, titulo: "", descricao: "", data: new Date().toISOString().split("T")[0]})
       setAberto(false)
@@ -96,16 +95,41 @@ export default function Home() {
       console.error("deu ruim", error)
     }
   }
+
+  // função que filtra a lista
+  const filtrar = async (e: React.FormEvent) => {
+    e.preventDefault()
+    try{ 
+      const response = await api.post("/todos/filtro", filtro.id)
+      console.log(response.data)
+      setLista(response.data)
+    } catch (error) {
+      console.error("deu ruim", error)
+    }
+  } 
   return (
     <div className="flex flex-col items-center w-full h-full">
       <div className="flex gap-2 w-full justify-between p-3">
-        <button className="hover:bg-gray-300 text-black p-4 rounded-lg font-bold" 
-          onClick={() => {
-            setFiltro(!filtro) 
-            fetchTodo()
-          }}
-        >ID
-        </button>
+        <div className="flex flax-col gap-2">
+
+          <form onSubmit={filtrar}>
+            <input type="text"
+              value={filtro.id}
+              onChange={(e) => {
+                setFiltro({...filtro, id: parseInt(e.target.value)})
+              }}
+            />
+            <button>buh</button>
+          </form>
+
+          <button className="hover:bg-gray-300 text-black p-4 rounded-lg font-bold" 
+            onClick={() => {
+              fetchTodo()
+            }}
+          >ID
+          </button>
+
+        </div>
         <button className="bg-green-500 hover:bg-green-600 text-white p-4 rounded-full shadow-lg" 
           onClick={() => {setAberto(true)}}
         >Adicionar+</button>
@@ -128,7 +152,7 @@ export default function Home() {
         {lista.map((e, index) => (
           <div key={index} className="bg-white flex flex-col items-start justify-start rounded-md min-h-[200px] shadow-lg">
             <div className="flex justify-end w-full">
-
+              <p>{e.id}</p>
               <button className="hover:bg-gray-100 text-white p-[8px] rounded-lg min-w-[10px] flex items-center justify-center"
                   onClick={() => {handleDelete(e.id)}}
                 ><img

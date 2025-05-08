@@ -31,4 +31,26 @@ export class TodoService {
             data,
         })
     }
+
+    async filtrar(filtros: { titulo?: string, data?: string, id?: number}) {
+        const where: any = {}
+
+        if(filtros.titulo) {
+            where.titulo = {
+                constains: filtros.titulo
+            }
+        }
+
+        if(filtros.data) {
+            where.data = filtros.data
+        }
+
+        if(filtros.id) {
+            where.id = filtros.id
+        }
+
+        return this.prisma.todo.findMany({
+            where,
+        })
+    }
 }

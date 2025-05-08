@@ -13,9 +13,14 @@ export class TodoController {
         return this.todoService.create(data)
     }
 
+    @Post('filtro')
+    filter(@Body() filtos: any) {
+        return this.todoService.filtrar(filtos)
+    }
+
     @Get()
-    findAll(@Query('ordem') ordem: 'asc' | 'desc' = 'asc') {
-        return this.todoService.findAll(ordem)
+    findAll() {
+        return this.todoService.findAll()
     }
 
     @Delete(":id")
