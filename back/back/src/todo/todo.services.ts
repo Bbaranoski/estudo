@@ -11,12 +11,8 @@ export class TodoService {
         })
     }
 
-    async findAll(ordem: 'asc' | 'desc' = 'asc') {
-        return this.prisma.todo.findMany({
-            orderBy: {
-                id: ordem,
-            },
-        })
+    async findAll() {
+        return this.prisma.todo.findMany()
     }
 
     async delete(id: number) {
@@ -32,7 +28,7 @@ export class TodoService {
         })
     }
 
-    async filtrar(filtros: { titulo?: string, data?: string, id?: number}) {
+    async filtrar(filtros: { titulo?: string, data?: string, id?: string}) {
         const where: any = {}
 
         if(filtros.titulo) {
@@ -46,7 +42,7 @@ export class TodoService {
         }
 
         if(filtros.id) {
-            where.id = filtros.id
+            where.id = parseInt(filtros.id)
         }
 
         return this.prisma.todo.findMany({
