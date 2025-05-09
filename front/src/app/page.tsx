@@ -8,6 +8,12 @@ interface Todo {
   descricao: string
   data: string
 }
+interface Filtro {
+  id?: string
+  titulo?: string
+  descricao?: string
+  data?: string
+}
 interface Edita {
   index: number
   alterar: boolean
@@ -20,7 +26,7 @@ export default function Home() {
   const [aberto, setAberto] = useState<boolean>(false)
   const [edita, setEdita] = useState<Edita>({index: 0, alterar: false})
   const [windwoWidth, setWindwoWidth] = useState(0)
-  const [filtro, setFiltro] = useState<Todo>({id: 0, titulo: "", descricao: "", data: new Date().toISOString().split("T")[0]})
+  const [filtro, setFiltro] = useState<Filtro>({})
 
   // função que pega o objeto da array para ser editado
   function editaTodo(index: number){
@@ -100,8 +106,7 @@ export default function Home() {
   const filtrar = async (e: React.FormEvent) => {
     e.preventDefault()
     try{ 
-      const response = await api.post("/todos/filtro", filtro.id)
-      console.log(response.data)
+      const response = await api.post("/todos/filtro", filtro)
       setLista(response.data)
     } catch (error) {
       console.error("deu ruim", error)
@@ -112,23 +117,27 @@ export default function Home() {
       <div className="flex gap-2 w-full justify-between p-3">
         <div className="flex flax-col gap-2">
 
-          <form onSubmit={filtrar}>
-            <input type="text"
-              value={filtro.id}
+          <form className="flex items-center gap-2"
+            onSubmit={filtrar}
+          >
+            <input className="bg-white border-1 rounded-lg w-12 h-8 pl-1"
+              type="text"
+              value={filtro?.id || ""}
+              placeholder="ID"
+              maxLength={4}
               onChange={(e) => {
-                setFiltro({...filtro, id: parseInt(e.target.value)})
+                setFiltro({...filtro, id: e.target.value})
               }}
             />
-            <button>buh</button>
+            <button className="hover:bg-gray-300 text-white p-[8px] h-8 rounded-lg min-w-[10px] flex items-center justify-center"
+            ><img
+                src="/icons/lupa.png" 
+                alt="Remover" 
+                width={17}/>
+            </button>
           </form>
 
-          <button className="hover:bg-gray-300 text-black p-4 rounded-lg font-bold" 
-            onClick={() => {
-              fetchTodo()
-            }}
-          >ID
-          </button>
-
+          
         </div>
         <button className="bg-green-500 hover:bg-green-600 text-white p-4 rounded-full shadow-lg" 
           onClick={() => {setAberto(true)}}
@@ -151,23 +160,26 @@ export default function Home() {
 
         {lista.map((e, index) => (
           <div key={index} className="bg-white flex flex-col items-start justify-start rounded-md min-h-[200px] shadow-lg">
-            <div className="flex justify-end w-full">
-              <p>{e.id}</p>
-              <button className="hover:bg-gray-100 text-white p-[8px] rounded-lg min-w-[10px] flex items-center justify-center"
-                  onClick={() => {handleDelete(e.id)}}
-                ><img
-                  src="/icons/trash.png" 
+            <div className="flex justify-between w-full pl-6">
+              <p className="pt-2 text-[clamp(0.75rem,1.1vw,1.5rem)]">{e.id}</p>
+              <div className="flex">
+                <button className="hover:bg-gray-100 text-white p-[8px] rounded-lg min-w-[10px] flex items-center justify-center"
+                    onClick={() => {handleDelete(e.id)}}
+                  ><img
+                    src="/icons/trash.png" 
+                    alt="Remover" 
+                    width={17}/>
+                </button>
+
+                <button className="hover:bg-gray-100 text-white p-[8px] rounded-lg min-w-[10px] flex items-center justify-center"
+                    onClick={() => {editaTodo(index)}}
+                  ><img
+                  src="/icons/pencil.png" 
                   alt="Remover" 
                   width={17}/>
-              </button>
-
-              <button className="hover:bg-gray-100 text-white p-[8px] rounded-lg min-w-[10px] flex items-center justify-center"
-                  onClick={() => {editaTodo(index)}}
-                ><img
-                src="/icons/pencil.png" 
-                alt="Remover" 
-                width={17}/></button>
+                </button>
               </div>
+            </div>
 
             <div/>
 
