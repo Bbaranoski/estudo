@@ -33,7 +33,8 @@ export class TodoService {
 
         if(filtros.titulo) {
             where.titulo = {
-                constains: filtros.titulo
+                contains: filtros.titulo,
+                mode: 'insensitive',
             }
         }
 

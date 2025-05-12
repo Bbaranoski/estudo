@@ -57,6 +57,7 @@ export default function Home() {
   }
   // faz o crete para o back-end
   const handleSubmit = async () => {
+    console.log(todo)
     try {
       const response = await api.post("/todos", todo)
       fetchTodo()
@@ -105,6 +106,7 @@ export default function Home() {
   // função que filtra a lista
   const filtrar = async (e: React.FormEvent) => {
     e.preventDefault()
+    console.log(filtro)
     try{ 
       const response = await api.post("/todos/filtro", filtro)
       setLista(response.data)
@@ -112,16 +114,22 @@ export default function Home() {
       console.error("deu ruim", error)
     }
   } 
+
+  function limpa(){
+    setFiltro({})
+    fetchTodo()
+  }
+
   return (
     <div className="flex flex-col items-center w-full h-full">
       <div className="flex gap-2 w-full justify-between p-3">
-        <div className="flex flax-col gap-2">
+        <div className="flex gap-2 items-center">
 
-          <form className="flex items-center gap-2"
+          <form className="flex gap-2"
             onSubmit={filtrar}
           >
-            <input className="bg-white border-1 rounded-lg w-12 h-8 pl-1"
-              type="text"
+            <input className="bg-white border-1 rounded-lg w-12 h-8 pl-1 text-black"
+              type="number"
               value={filtro?.id || ""}
               placeholder="ID"
               maxLength={4}
@@ -129,6 +137,23 @@ export default function Home() {
                 setFiltro({...filtro, id: e.target.value})
               }}
             />
+            <input className="bg-white border-1 rounded-lg w-36 h-8 pl-1 text-black"
+              type="text"
+              value={filtro?.titulo || ""}
+              placeholder="TITULO"
+              maxLength={11}
+              onChange={(e) => {
+                setFiltro({...filtro, titulo: e.target.value.toUpperCase()})
+              }}
+            />
+            <input className="bg-white border-1 rounded-lg w-36 h-8 pl-1 text-black"
+              type="date"
+              value={filtro?.data || ""}
+              onChange={(e) => {
+                setFiltro({...filtro, data: e.target.value})
+              }}
+            />
+
             <button className="hover:bg-gray-300 text-white p-[8px] h-8 rounded-lg min-w-[10px] flex items-center justify-center"
             ><img
                 src="/icons/lupa.png" 
@@ -137,7 +162,9 @@ export default function Home() {
             </button>
           </form>
 
-          
+          <button className="bg-red-500 hover:bg-red-600 text-white p-[8px] h-8 rounded-lg min-w-[10px] flex items-center justify-center"
+            onClick={limpa}
+          >Limpar</button>
         </div>
         <button className="bg-green-500 hover:bg-green-600 text-white p-4 rounded-full shadow-lg" 
           onClick={() => {setAberto(true)}}
@@ -161,7 +188,7 @@ export default function Home() {
         {lista.map((e, index) => (
           <div key={index} className="bg-white flex flex-col items-start justify-start rounded-md min-h-[200px] shadow-lg">
             <div className="flex justify-between w-full pl-6">
-              <p className="pt-2 text-[clamp(0.75rem,1.1vw,1.5rem)]">{e.id}</p>
+              <p className="pt-2 text-[clamp(0.75rem,1.1vw,1.5rem)] text-black">{e.id}</p>
               <div className="flex">
                 <button className="hover:bg-gray-100 text-white p-[8px] rounded-lg min-w-[10px] flex items-center justify-center"
                     onClick={() => {handleDelete(e.id)}}
@@ -190,7 +217,7 @@ export default function Home() {
               <div className="flex justify-start w-full">
                 
                 <p className="flex text-neutral-500 items-center justify-center text-xl text-[clamp(0.75rem,1.1vw,1.5rem)]"
-                >{new Date(e.data).toLocaleDateString('pt-BR')}</p>
+                >{new Date(e.data).toLocaleDateString('pt-BR', {timeZone: 'UTC'})}</p>
 
               </div>
 
@@ -204,9 +231,7 @@ export default function Home() {
         {aberto && (
           <div className="fixed inset-0 bg-black/50 flex justify-center items-center">
             <form className="bg-blue-500 p-6 rounded-lg shadow-lg w-96"
-            onSubmit={
-              submit
-            }
+            onSubmit={submit}
             >
               <input className="p-2 border rounded mb-2 w-full"
                 type="text"
