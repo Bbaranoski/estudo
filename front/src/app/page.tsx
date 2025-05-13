@@ -27,6 +27,7 @@ export default function Home() {
   const [edita, setEdita] = useState<Edita>({index: 0, alterar: false})
   const [windwoWidth, setWindwoWidth] = useState(0)
   const [filtro, setFiltro] = useState<Filtro>({})
+  const [ordem, setOrdem] = useState<boolean>(false)
 
   // função que pega o objeto da array para ser editado
   function editaTodo(index: number){
@@ -70,7 +71,7 @@ export default function Home() {
   const fetchTodo = async () => {
     try {
       const response = await api.get("/todos")
-      setLista(response.data)
+      ordemID(response.data)
       setTodo({id: 0, titulo: "", descricao: "", data: new Date().toISOString().split("T")[0]})
       setAberto(false)
     } catch (error) {
@@ -115,64 +116,102 @@ export default function Home() {
     }
   } 
 
+  // função onde limpa os filtros e faz um get
   function limpa(){
     setFiltro({})
     fetchTodo()
   }
 
+  // função ordena
+  function ordemID(data: Array<Todo>) {
+    let temp = ordem == false 
+    ? [...data].sort((a, b) => a.id - b.id)
+    : [...data].sort((a, b) => b.id - a.id)
+    setLista(temp)
+  } 
+
   return (
     <div className="flex flex-col items-center w-full h-full">
-      <div className="flex gap-2 w-full justify-between p-3">
-        <div className="flex gap-2 items-center">
+      <div className="flex gap-2 w-full p-3 flex-col items-start">
 
-          <form className="flex gap-2"
+          <form className={"flex w-full"}
             onSubmit={filtrar}
           >
-            <input className="bg-white border-1 rounded-lg w-12 h-8 pl-1 text-black"
-              type="number"
-              value={filtro?.id || ""}
-              placeholder="ID"
-              maxLength={4}
-              onChange={(e) => {
-                setFiltro({...filtro, id: e.target.value})
-              }}
-            />
-            <input className="bg-white border-1 rounded-lg w-36 h-8 pl-1 text-black"
-              type="text"
-              value={filtro?.titulo || ""}
-              placeholder="TITULO"
-              maxLength={11}
-              onChange={(e) => {
-                setFiltro({...filtro, titulo: e.target.value.toUpperCase()})
-              }}
-            />
-            <input className="bg-white border-1 rounded-lg w-36 h-8 pl-1 text-black"
-              type="date"
-              value={filtro?.data || ""}
-              onChange={(e) => {
-                setFiltro({...filtro, data: e.target.value})
-              }}
-            />
+            <div className={`flex gap-2 items-center ${
+              windwoWidth < 640
+              ? "flex-col"
+              : "flex-row"
+            }`}>
+              <div className="flex gap-2 items-center">
+                <input className="bg-white border-1 rounded-lg w-12 h-8 pl-1 text-black"
+                  type="number"
+                  value={filtro?.id || ""}
+                  placeholder="ID"
+                  maxLength={4}
+                  onChange={(e) => {
+                    setFiltro({...filtro, id: e.target.value})
+                  }}
+                />
+                <input className={`bg-white border-1 rounded-lg h-8 pl-1 text-black ${
+                  windwoWidth < 640
+                  ? "w-24"
+                  : "w-36"
+                }`}
+                  type="text"
+                  value={filtro?.titulo || ""}
+                  placeholder="TITULO"
+                  maxLength={11}
+                  onChange={(e) => {
+                    setFiltro({...filtro, titulo: e.target.value.toUpperCase()})
+                  }}
+                />
+              </div>
+              <input className="bg-white border-1 rounded-lg w-36 h-8 pl-1 text-black"
+                type="date"
+                value={filtro?.data || ""}
+                onChange={(e) => {
+                  setFiltro({...filtro, data: e.target.value})
+                }}
+              />
+            </div>
 
-            <button className="hover:bg-gray-300 text-white p-[8px] h-8 rounded-lg min-w-[10px] flex items-center justify-center"
-            ><img
-                src="/icons/lupa.png" 
-                alt="Remover" 
-                width={17}/>
-            </button>
+            <div className={`flex gap-2 justify-between items-center w-full ${
+              windwoWidth < 460
+              ? "flex-col items-end"
+              : "flex-row"
+            }`}>
+              <div className="flex items-center gap-2">
+                <button className="hover:bg-gray-300 text-white p-[8px] h-8 rounded-lg min-w-[10px] flex items-center justify-center"
+                  type="submit"
+                ><img
+                    src="/icons/lupa.png" 
+                    alt="Remover" 
+                    width={17}/>
+                </button>
+
+                <button className="bg-red-500 hover:bg-red-600 text-white p-[8px] h-8 rounded-lg min-w-[10px] flex items-center justify-center"
+                  type="button"
+                  onClick={limpa}
+                >Limpar</button>
+              </div>
+
+              <button className="bg-green-500 hover:bg-green-600 text-white p-4 rounded-full shadow-lg" 
+                type="button"
+                onClick={() => {setAberto(true)}}
+              >Adicionar+</button>
+            </div>
           </form>
-
-          <button className="bg-red-500 hover:bg-red-600 text-white p-[8px] h-8 rounded-lg min-w-[10px] flex items-center justify-center"
-            onClick={limpa}
-          >Limpar</button>
-        </div>
-        <button className="bg-green-500 hover:bg-green-600 text-white p-4 rounded-full shadow-lg" 
-          onClick={() => {setAberto(true)}}
-        >Adicionar+</button>
+            <button
+              onClick={() => {
+                setOrdem(!ordem)
+                ordemID(lista)
+                console.log(ordem)
+              }}
+            >ID</button>
       </div>
 
       <div className={`grid w-full gap-3 p-3 
-        grid-rows-[repeat(auto-fit,minmax(200px,35vh))]
+        grid-rows-[repeat(auto-fit,250px)]
         ${
           windwoWidth <= 425
           ? "grid-cols-[repeat(auto-fit,minmax(300px,1fr))]" 
