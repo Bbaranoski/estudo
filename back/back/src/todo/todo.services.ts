@@ -12,6 +12,7 @@ export class TodoService {
     }
 
     async findAll() {
+        console.log('Breno é bixa 2')
         return this.prisma.todo.findMany()
     }
 

@@ -10,6 +10,7 @@ export class TodoController {
     @Post()
     @UsePipes(new ValidationPipe({whitelist: true}))
     create(@Body() data: CreateTodoDto) {
+        console.log('Tua mae é bixa')
         return this.todoService.create(data)
     }
 
@@ -20,6 +21,7 @@ export class TodoController {
 
     @Get()
     findAll() {
+        console.log('Breno é bixa')
         return this.todoService.findAll()
     }
 

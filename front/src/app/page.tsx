@@ -107,10 +107,9 @@ export default function Home() {
   // função que filtra a lista
   const filtrar = async (e: React.FormEvent) => {
     e.preventDefault()
-    console.log(filtro)
     try{ 
       const response = await api.post("/todos/filtro", filtro)
-      setLista(response.data)
+      ordemID(response.data)
     } catch (error) {
       console.error("deu ruim", error)
     }
@@ -129,6 +128,10 @@ export default function Home() {
     : [...data].sort((a, b) => b.id - a.id)
     setLista(temp)
   } 
+
+  useEffect(() => {
+    ordemID(lista)
+  },[ordem])
 
   return (
     <div className="flex flex-col items-center w-full h-full">
@@ -201,13 +204,20 @@ export default function Home() {
               >Adicionar+</button>
             </div>
           </form>
-            <button
+            <button className="hover:bg-gray-300 text-black p-[8px] h-8 rounded-lg min-w-[10px] flex items-center justify-center"
               onClick={() => {
                 setOrdem(!ordem)
-                ordemID(lista)
-                console.log(ordem)
               }}
-            >ID</button>
+            >ID
+            <img className="pb-1"
+                src={`${
+                  ordem
+                  ? "/icons/acima.png"
+                  : "/icons/abaixo.png"
+                }`}
+                alt="Seta" 
+                width={15}/>
+            </button>
       </div>
 
       <div className={`grid w-full gap-3 p-3 
