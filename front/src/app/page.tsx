@@ -24,6 +24,7 @@ export default function Home() {
   const [todo, setTodo] = useState<Todo>({id: 0, titulo: "", descricao: "", data: new Date().toISOString().split("T")[0]})
   const [lista, setLista] = useState<Todo[]>([])
   const [aberto, setAberto] = useState<boolean>(false)
+  const [modalDelete, setModalDelete] = useState<Edita>({index: 0, alterar: false})
   const [edita, setEdita] = useState<Edita>({index: 0, alterar: false})
   const [windwoWidth, setWindwoWidth] = useState(0)
   const [filtro, setFiltro] = useState<Filtro>({})
@@ -135,6 +136,9 @@ export default function Home() {
 
   return (
     <div className="flex flex-col items-center w-full h-full">
+
+      {/* MENU FILTROS */}
+
       <div className="flex gap-2 w-full p-3 flex-col items-start">
 
           <form className={"flex w-full"}
@@ -178,6 +182,8 @@ export default function Home() {
               />
             </div>
 
+            {/* BOTOES DA PARTE DE CIMA */}
+
             <div className={`flex gap-2 justify-between items-center w-full ${
               windwoWidth < 460
               ? "flex-col items-end"
@@ -219,6 +225,8 @@ export default function Home() {
                 width={15}/>
             </button>
       </div>
+      
+      {/* BREAKPOINTS GRID */}
 
       <div className={`grid w-full gap-3 p-3 
         grid-rows-[repeat(auto-fit,250px)]
@@ -234,13 +242,15 @@ export default function Home() {
               : "grid-cols-[repeat(auto-fit,minmax(200px,1fr))]"}
       `}>
 
+        {/* LISTA DE TODOS (PRINCIPAL) */}
+        
         {lista.map((e, index) => (
           <div key={index} className="bg-white flex flex-col items-start justify-start rounded-md min-h-[200px] shadow-lg">
             <div className="flex justify-between w-full pl-6">
               <p className="pt-2 text-[clamp(0.75rem,1.1vw,1.5rem)] text-black">{e.id}</p>
               <div className="flex">
                 <button className="hover:bg-gray-100 text-white p-[8px] rounded-lg min-w-[10px] flex items-center justify-center"
-                    onClick={() => {handleDelete(e.id)}}
+                    onClick={() => setModalDelete({index: e.id, alterar: true})}
                   ><img
                     src="/icons/trash.png" 
                     alt="Remover" 
@@ -276,6 +286,8 @@ export default function Home() {
             
           </div>
         ))}
+
+        {/* MODAL DE ADICIONAR */}
 
         {aberto && (
           <div className="fixed inset-0 bg-black/50 flex justify-center items-center">
@@ -331,7 +343,34 @@ export default function Home() {
             </form>
           </div>
         )}
+
+        {/* MODAL DE EXCLUIR */}
+
+        {modalDelete.alterar && (
+          <div className="fixed inset-0 bg-black/50 flex justify-center items-center">
+            <div className="bg-white p-6 rounded-lg shadow-lg w-96 h-48 flex flex-col justify-around">
+              <h2 className="text-black font-bold text-[clamp(1rem,1.5vw,2rem)]">Tem certeza que deseja excluir?</h2>
+              <div className="flex justify-between">
+                <button className="bg-red-500 hover:bg-red-600 text-white p-[10px] rounded-md min-w-[50px] flex items-center justify-center"
+                onClick={() => {
+                    setModalDelete({index: 0, alterar: false})
+                  }}
+                >
+                  NÃO
+                </button>
+                <button className="bg-green-500 hover:bg-green-600 text-white p-[10px] rounded-md min-w-[50px] flex items-center justify-center"
+                onClick={() => {
+                  handleDelete(modalDelete.index)
+                  setModalDelete({index: 0, alterar: false})
+                }}
+                >
+                  SIM
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
-    </div>
+    </div>    
   );
 }
