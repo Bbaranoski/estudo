@@ -189,7 +189,7 @@ export default function Home() {
               ? "flex-col items-end"
               : "flex-row"
             }`}>
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2 pl-2">
                 <button className="hover:bg-gray-300 text-white p-[8px] h-8 rounded-lg min-w-[10px] flex items-center justify-center"
                   type="submit"
                 ><img
@@ -204,7 +204,7 @@ export default function Home() {
                 >Limpar</button>
               </div>
 
-              <button className="bg-green-500 hover:bg-green-600 text-white p-4 rounded-full shadow-lg" 
+              <button className="bg-green-500 hover:bg-red-600 text-white p-[12px] h-10 rounded-lg min-w-[10px] flex items-center justify-center" 
                 type="button"
                 onClick={() => {setAberto(true)}}
               >Adicionar+</button>
@@ -229,7 +229,7 @@ export default function Home() {
       {/* BREAKPOINTS GRID */}
 
       <div className={`grid w-full gap-3 p-3 
-        grid-rows-[repeat(auto-fit,250px)]
+        grid-rows-[repeat(auto-fit,225px)]
         ${
           windwoWidth <= 425
           ? "grid-cols-[repeat(auto-fit,minmax(300px,1fr))]" 
@@ -237,9 +237,13 @@ export default function Home() {
             ? lista.length <= 2
               ? "grid-cols-[repeat(auto-fit,minmax(200px,18vw))]"
               : "grid-cols-[repeat(auto-fit,minmax(200px,1fr))]"
-            : lista.length <= 4
-              ? "grid-cols-[repeat(auto-fit,minmax(200px,18vw))]" 
-              : "grid-cols-[repeat(auto-fit,minmax(200px,1fr))]"}
+            : windwoWidth <= 1620
+              ?  lista.length <= 4
+                ? "grid-cols-[repeat(auto-fit,minmax(200px,18vw))]" 
+                : "grid-cols-[repeat(auto-fit,minmax(200px,1fr))]"
+              : lista.length <= 5
+                ? "grid-cols-[repeat(auto-fit,minmax(200px,18vw))] grid-rows-[repeat(auto-fit,300px)]"
+                : "grid-cols-[repeat(auto-fit,minmax(200px,1fr))] grid-rows-[repeat(auto-fit,300px)]" }
       `}>
 
         {/* LISTA DE TODOS (PRINCIPAL) */}
@@ -291,7 +295,7 @@ export default function Home() {
 
         {aberto && (
           <div className="fixed inset-0 bg-black/50 flex justify-center items-center">
-            <form className="bg-blue-500 p-6 rounded-lg shadow-lg w-96"
+            <form className="bg-white p-6 rounded-lg shadow-lg w-96"
             onSubmit={submit}
             >
               <input className="p-2 border rounded mb-2 w-full"
