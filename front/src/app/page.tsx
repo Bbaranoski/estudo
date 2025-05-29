@@ -1,6 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import api from "@/services/api";
+import './globals.css'
 
 interface Todo {
   id: number
@@ -26,7 +27,7 @@ export default function Home() {
   const [aberto, setAberto] = useState<boolean>(false)
   const [modalDelete, setModalDelete] = useState<Edita>({index: 0, alterar: false})
   const [edita, setEdita] = useState<Edita>({index: 0, alterar: false})
-  const [windwoWidth, setWindwoWidth] = useState(0)
+  const [windowWidth, setWindowWidth] = useState(0)
   const [filtro, setFiltro] = useState<Filtro>({})
   const [ordem, setOrdem] = useState<boolean>(false)
 
@@ -40,8 +41,8 @@ export default function Home() {
 
   // cria variavel do tamanho da tela para utilizar em breakpoints
   useEffect(() => {
-    setWindwoWidth(window.innerWidth)
-    const handleResize = () => setWindwoWidth(window.innerWidth)
+    setWindowWidth(window.innerWidth)
+    const handleResize = () => setWindowWidth(window.innerWidth)
     window.addEventListener("resize", handleResize)
     return () => window.removeEventListener("resize", handleResize)
   }, [])
@@ -135,7 +136,7 @@ export default function Home() {
   },[ordem])
 
   return (
-    <div className="flex flex-col items-center w-full h-full">
+    <div className="flex flex-col items-center w-full">
 
       {/* MENU FILTROS */}
 
@@ -145,12 +146,12 @@ export default function Home() {
             onSubmit={filtrar}
           >
             <div className={`flex gap-2 items-center ${
-              windwoWidth < 640
+              windowWidth < 640
               ? "flex-col"
               : "flex-row"
             }`}>
               <div className="flex gap-2 items-center">
-                <input className="bg-white border-1 rounded-lg w-12 h-8 pl-1 text-black"
+                <input className="bg-white border-1 rounded-lg w-12 h-8 pl-1 text-black shadow-lg"
                   type="number"
                   value={filtro?.id || ""}
                   placeholder="ID"
@@ -159,8 +160,8 @@ export default function Home() {
                     setFiltro({...filtro, id: e.target.value})
                   }}
                 />
-                <input className={`bg-white border-1 rounded-lg h-8 pl-1 text-black ${
-                  windwoWidth < 640
+                <input className={`bg-white border-1 rounded-lg h-8 pl-1 text-black shadow-lg ${
+                  windowWidth < 640
                   ? "w-24"
                   : "w-36"
                 }`}
@@ -173,7 +174,7 @@ export default function Home() {
                   }}
                 />
               </div>
-              <input className="bg-white border-1 rounded-lg w-36 h-8 pl-1 text-black"
+              <input className="bg-white border-1 rounded-lg w-36 h-8 pl-1 text-black shadow-lg"
                 type="date"
                 value={filtro?.data || ""}
                 onChange={(e) => {
@@ -185,7 +186,7 @@ export default function Home() {
             {/* BOTOES DA PARTE DE CIMA */}
 
             <div className={`flex gap-2 justify-between items-center w-full ${
-              windwoWidth < 460
+              windowWidth < 460
               ? "flex-col items-end"
               : "flex-row"
             }`}>
@@ -198,13 +199,13 @@ export default function Home() {
                     width={17}/>
                 </button>
 
-                <button className="bg-red-500 hover:bg-red-600 text-white p-[8px] h-8 rounded-lg min-w-[10px] flex items-center justify-center"
+                <button className="bg-red-500 hover:bg-red-600 text-white p-[8px] h-8 rounded-lg min-w-[10px] flex items-center justify-center shadow-lg"
                   type="button"
                   onClick={limpa}
                 >Limpar</button>
               </div>
 
-              <button className="bg-green-500 hover:bg-red-600 text-white p-[12px] h-10 rounded-lg min-w-[10px] flex items-center justify-center" 
+              <button className="bg-green-500 hover:bg-green-600 text-white p-[12px] h-10 rounded-lg min-w-[10px] flex items-center justify-center shadow-lg" 
                 type="button"
                 onClick={() => {setAberto(true)}}
               >Adicionar+</button>
@@ -229,21 +230,21 @@ export default function Home() {
       {/* BREAKPOINTS GRID */}
 
       <div className={`grid w-full gap-3 p-3 
-        grid-rows-[repeat(auto-fit,225px)]
+        grid-rows-[repeat(auto-fit,200px)] h-full
         ${
-          windwoWidth <= 425
+          windowWidth <= 425
           ? "grid-cols-[repeat(auto-fit,minmax(300px,1fr))]" 
-          : windwoWidth <= 864
+          : windowWidth <= 864
             ? lista.length <= 2
-              ? "grid-cols-[repeat(auto-fit,minmax(200px,18vw))]"
+              ? "grid-cols-[repeat(auto-fit,minmax(200px,19vw))]"
               : "grid-cols-[repeat(auto-fit,minmax(200px,1fr))]"
-            : windwoWidth <= 1620
+            : windowWidth <= 1620
               ?  lista.length <= 4
-                ? "grid-cols-[repeat(auto-fit,minmax(200px,18vw))]" 
-                : "grid-cols-[repeat(auto-fit,minmax(200px,1fr))]"
+                ? "grid-cols-[repeat(auto-fit,minmax(200px,19vw))]" 
+                : "grid-cols-[repeat(auto-fit,minmax(225px,1fr))]"
               : lista.length <= 5
-                ? "grid-cols-[repeat(auto-fit,minmax(200px,18vw))] grid-rows-[repeat(auto-fit,300px)]"
-                : "grid-cols-[repeat(auto-fit,minmax(200px,1fr))] grid-rows-[repeat(auto-fit,300px)]" }
+                ? "grid-cols-[repeat(auto-fit,minmax(200px,19vw))] grid-rows-[repeat(auto-fit,275px)]"
+                : "grid-cols-[repeat(auto-fit,minmax(300px,1fr))] grid-rows-[repeat(auto-fit,275px)]" }
       `}>
 
         {/* LISTA DE TODOS (PRINCIPAL) */}
@@ -284,8 +285,12 @@ export default function Home() {
 
               </div>
 
-              <p className="text-black whitespace-pre-wrap break-words text-[clamp(0.75rem,1vw,1.5rem)] h-full"
-              >{e.descricao}</p>
+              <div className="relative">
+                <p className="text-black whitespace-pre-wrap break-words text-[clamp(0.75rem,1vw,1.5rem)] max-h-20 overflow-y-auto hide-scrollbar pb-1"
+                >{e.descricao}</p>
+
+                <div className="pointer-events-none absolute bottom-0 left-0 w-full h-6 bg-gradient-to-t from-white/80 to transparent"></div>
+              </div>
             </div>
             
           </div>
@@ -294,7 +299,7 @@ export default function Home() {
         {/* MODAL DE ADICIONAR */}
 
         {aberto && (
-          <div className="fixed inset-0 bg-black/50 flex justify-center items-center">
+          <div className="fixed inset-0 bg-black/50 flex justify-center items-center text-black ">
             <form className="bg-white p-6 rounded-lg shadow-lg w-96"
             onSubmit={submit}
             >
@@ -304,19 +309,15 @@ export default function Home() {
                 value={todo.titulo}
                 maxLength={11}
                 onChange={(e) => {
-                  const temp = e.target.value.toUpperCase().replace(/\n/g, "")
-                  setTodo({...todo, titulo: temp})
+                  setTodo({...todo, titulo: e.target.value})
                 }}
                 required
               />
               <textarea className="p-2 border rounded mb-2 w-full min-h-[6rem] resize-none"
                 placeholder="Descrição"
                 value={todo.descricao}
-                maxLength={83}
-                onChange={(e) => {
-                  const temp = e.target.value.replace(/\n/g,"")
-                  const temp2 = temp.charAt(0).toUpperCase() + temp.slice(1).toLowerCase()
-                  setTodo({...todo, descricao: temp2}) 
+                onChange={(e) => {            
+                  setTodo({...todo, descricao: e.target.value}) 
                 }}
                 required
               />
@@ -353,7 +354,7 @@ export default function Home() {
         {modalDelete.alterar && (
           <div className="fixed inset-0 bg-black/50 flex justify-center items-center">
             <div className="bg-white p-6 rounded-lg shadow-lg w-96 h-48 flex flex-col justify-around">
-              <h2 className="text-black font-bold text-[clamp(1rem,1.5vw,2rem)]">Tem certeza que deseja excluir?</h2>
+              <h2 className="text-black font-bold text-[clamp(1rem,1.5vw,2rem)]">Tem certeza que deseja excluir? ({modalDelete.index})</h2>
               <div className="flex justify-between">
                 <button className="bg-red-500 hover:bg-red-600 text-white p-[10px] rounded-md min-w-[50px] flex items-center justify-center"
                 onClick={() => {
