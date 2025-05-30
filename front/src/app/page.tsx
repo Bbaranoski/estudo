@@ -289,7 +289,7 @@ export default function Home() {
                 <p className="text-black whitespace-pre-wrap break-words text-[clamp(0.75rem,1vw,1.5rem)] max-h-20 overflow-y-auto hide-scrollbar pb-1"
                 >{e.descricao}</p>
 
-                <div className="pointer-events-none absolute bottom-0 left-0 w-full h-6 bg-gradient-to-t from-white/80 to transparent"></div>
+                <div className="pointer-events-none absolute bottom-0 left-0 w-full h-4 bg-gradient-to-t from-white/80 to transparent"></div>
               </div>
             </div>
             
@@ -323,7 +323,7 @@ export default function Home() {
               />
 
               <div className="flex gap-2">
-                <button className="bg-red-500 hover:bg-red-600 text-white p-[8px] rounded-md min-w-[50px] flex items-center justify-center"
+                <button className="bg-red-500 hover:bg-red-600 text-white p-[6px] rounded-md min-w-[40px] h-11 flex items-center justify-center shadow-lg"
                   type="button"
                   onClick={() => {
                     setTodo({...todo, titulo: "", descricao: "", data: new Date().toISOString().split("T")[0]})
@@ -332,7 +332,7 @@ export default function Home() {
                   }}
                 >X</button>
 
-                <input className="p-2 border rounded mb-2 w-full"
+                <input className="p-2 border rounded mb-2 w-full self-center"
                   type="date" 
                   value={todo.data}
                   onChange={(e) => {
@@ -341,7 +341,7 @@ export default function Home() {
                   required
                 />
 
-                <button className="bg-green-500 hover:bg-green-600 text-white p-[8px] rounded-md min-w-[50px] flex items-center justify-center"
+                <button className="bg-green-500 hover:bg-green-600 text-white p-[6px] rounded-md min-w-[40px] h-11 flex items-center justify-center shadow-lg"
                   type="submit"
                 >V</button>
               </div>
@@ -356,14 +356,14 @@ export default function Home() {
             <div className="bg-white p-6 rounded-lg shadow-lg w-96 h-48 flex flex-col justify-around">
               <h2 className="text-black font-bold text-[clamp(1rem,1.5vw,2rem)]">Tem certeza que deseja excluir? ({modalDelete.index})</h2>
               <div className="flex justify-between">
-                <button className="bg-red-500 hover:bg-red-600 text-white p-[10px] rounded-md min-w-[50px] flex items-center justify-center"
+                <button className="bg-red-500 hover:bg-red-600 text-white p-[10px] rounded-md min-w-[50px] flex items-center justify-center shadow-lg"
                 onClick={() => {
                     setModalDelete({index: 0, alterar: false})
                   }}
                 >
                   NÃO
                 </button>
-                <button className="bg-green-500 hover:bg-green-600 text-white p-[10px] rounded-md min-w-[50px] flex items-center justify-center"
+                <button className="bg-green-500 hover:bg-green-600 text-white p-[10px] rounded-md min-w-[50px] flex items-center justify-center shadow-lg"
                 onClick={() => {
                   handleDelete(modalDelete.index)
                   setModalDelete({index: 0, alterar: false})
