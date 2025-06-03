@@ -18,6 +18,10 @@ export default function Navbar() {
       <h1 className="text-xl font-bold text-[clamp(1rem,1.5vw,2rem)]">
         ToDo
       </h1>
+      <div className="gap-4 flex">
+        <a href="/">Sair</a>
+        <a href="/todo">teste2</a>
+      </div>
     </nav>
   );
 }
