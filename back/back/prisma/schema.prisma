@@ -20,6 +20,8 @@ model User {
   password  String
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
+
+  todos     Todo[]
 }
 
 model Todo {
@@ -28,4 +30,7 @@ model Todo {
   descricao String
   data      String
   createdAt DateTime @default(now())
+
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
 }
