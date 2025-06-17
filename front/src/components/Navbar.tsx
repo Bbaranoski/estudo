@@ -20,7 +20,6 @@ export default function Navbar() {
       </h1>
       <div className="gap-4 flex">
         <a href="/">Sair</a>
-        <a href="/todo">teste2</a>
       </div>
     </nav>
   );
