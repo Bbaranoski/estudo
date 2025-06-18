@@ -27,7 +27,7 @@ export class AuthController {
 
         return {
             message: 'Login realizado com sucesso',
-            acess_token: toeknObj.access_token,
+            access_token: toeknObj.access_token,
             expires_in: toeknObj.expires_in,
         }
     }

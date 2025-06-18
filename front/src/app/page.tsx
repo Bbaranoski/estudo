@@ -18,6 +18,8 @@ export default function Login() {
         e.preventDefault()
         try {
             const response = await api.post("/auth/login", user)
+            const token = response.data.access_token
+            localStorage.setItem('token', token)
             router.push("/todo")
         } catch (error) {
             console.log("putz", error)
