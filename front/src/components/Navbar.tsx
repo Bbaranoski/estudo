@@ -19,7 +19,7 @@ export default function Navbar() {
         ToDo
       </h1>
       <div className="gap-4 flex">
-        <a href="/">Sair</a>
+        <a className="text-xl font-bold text-[clamp(0.5rem,1vw,1.5rem)]" href="/">Sair</a>
       </div>
     </nav>
   );
