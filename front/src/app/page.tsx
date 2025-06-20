@@ -22,7 +22,7 @@ export default function Login() {
             localStorage.setItem('token', token)
             router.push("/todo")
         } catch (error) {
-            console.log("putz", error)
+            console.log(error)
         }
     }
     return (

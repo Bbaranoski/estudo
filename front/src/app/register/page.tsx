@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import api from "@/services/api"
+import { useRouter } from "next/navigation";
 
 interface User {
     name: string,
@@ -12,12 +13,16 @@ export default function Register () {
 
     const [user, setUser] = useState<User>({name: "", email: "", password: ""})
 
+    const router = useRouter()
+
     const register = async (e: React.FormEvent) => {
         e.preventDefault()
         try{
             const response = await api.post("/auth/register", user)
-        } catch {
-
+            console.log(response)
+            router.push("/")
+        } catch(error) {
+            console.log(error)
         }
     }
     return (
@@ -27,6 +32,7 @@ export default function Register () {
             onSubmit={register}
             >
                 <input className="p-2 border rounded"
+                required
                 placeholder="Nome" 
                 type="text"
                 value={user?.name || ""}
@@ -35,6 +41,7 @@ export default function Register () {
                 }}
                 />
                 <input className="p-2 border rounded"
+                required
                 placeholder="Email" 
                 type="email"
                 value={user?.email || ""}
@@ -43,6 +50,8 @@ export default function Register () {
                 }}
                 />
                 <input className="p-2 border rounded"
+                required
+                minLength={6}
                 placeholder="Senha" 
                 type="password"
                 value={user?.password || ""}
@@ -51,7 +60,7 @@ export default function Register () {
                 }}
                 />
                 <button className="bg-green-500 hover:bg-green-600 text-white p-[12px] h-10 rounded-lg min-w-[10px] flex items-center justify-center shadow-lg"
-                >Entrar</button>
+                >Criar</button>
             </form>
         </div>
     )
