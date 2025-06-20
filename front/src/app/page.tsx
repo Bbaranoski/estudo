@@ -62,10 +62,10 @@ export default function Login() {
                             <p>Esqueceu a senha?</p>
                         </div>
                     </form>
-                    <div className="w-[150px]">
-                        <p className="text-[10px]"
+                    <div className="w-[200px]">
+                        <p className="text-[9px]"
                         >Criado por: Breno Baranoski</p>
-                        <p className="text-[10px]"
+                        <p className="text-[9px]"
                         >Testado por: Gabriel Alves, Lucas Paim, Riccardo Bortolotto, Erik Saretta, Michael Segalla</p>
                     </div>
                 </div>
