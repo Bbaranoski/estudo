@@ -38,7 +38,7 @@ export default function Login() {
                     onSubmit={login}
                     action="get"
                     >
-                        <input className="p-2 border rounded w-[20vw] min-w-[200px]"
+                        <input className="p-2 border rounded w-[20vw] min-w-[200px] shadow-md"
                         type="email"
                         placeholder="Email"
                         value={user?.email || ""} 
@@ -46,7 +46,7 @@ export default function Login() {
                             setUser({...user, email: e.target.value})
                         }}
                         />
-                        <input className="p-2 border rounded w-[20vw] min-w-[200px]"
+                        <input className="p-2 border rounded w-[20vw] min-w-[200px] shadow-md"
                         type="password"
                         placeholder="Senha"
                         value={user?.password || ""}
@@ -54,7 +54,7 @@ export default function Login() {
                             setUser({...user, password: e.target.value})
                         }}
                         />
-                        <button className="bg-green-500 hover:bg-green-600 text-white p-[12px] h-10 rounded-lg min-w-[10px] flex items-center justify-center shadow-lg"
+                        <button className="shadow-md bg-green-500 hover:bg-green-600 text-white p-[12px] h-10 rounded-lg min-w-[10px] flex items-center justify-center"
                         >Entrar</button>
                         <div className="flex justify-between">
                             <a className="text-blue-600 visited:text-purple-600"
