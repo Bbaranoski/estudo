@@ -28,8 +28,8 @@ export default function Register () {
             const response = await api.post("/auth/register", user)
             console.log(response)
             router.push("/")
-        } catch(error) {
-            console.log(error)
+        } catch(error: any) {
+            setError(error.response.data.message)
         }
     }
     return (

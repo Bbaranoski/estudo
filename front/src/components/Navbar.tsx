@@ -1,6 +1,20 @@
-import Link from "next/link"
+'use client'
+import { useRouter, usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
 
 export default function Navbar() {
+  const pathname = usePathname()
+  const [token, setToken] = useState<string | null>(null)
+
+  useEffect(() => {
+    setToken(localStorage.getItem('token'))
+  }, [pathname])
+
+  const logout = () => {
+    localStorage.removeItem('token')
+    setToken(null)
+  }
+
   return (
     <nav className="
       sticky top-0 z-10
@@ -19,7 +33,12 @@ export default function Navbar() {
         ToDo
       </h1>
       <div className="gap-4 flex">
-        <a className="text-xl font-bold text-[clamp(15px,1vw,1.5rem)]" href="/">Sair</a>
+        {token &&(
+          <a className="text-xl font-bold text-[clamp(15px,1vw,1.5rem)]"
+          onClick={logout}
+          href="/" 
+          >Sair</a>
+        )}
       </div>
     </nav>
   );

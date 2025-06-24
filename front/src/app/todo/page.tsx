@@ -296,6 +296,33 @@ export default function Home() {
           </div>
         ))}
 
+        {lista.length < 1 &&(
+          <div>
+            <div className="bg-white flex flex-col items-start justify-start rounded-md min-h-[200px] shadow-lg pt-8">
+
+              <div className="flex flex-col gap-3 w-full pl-6 pr-6">
+                <h2 className="text-black font-bold text-[clamp(1rem,1.5vw,2rem)]"
+                >Exemplo</h2>
+
+                <div className="flex justify-start w-full">
+                  
+                  <p className="flex text-neutral-500 items-center justify-center text-xl text-[clamp(0.75rem,1.1vw,1.5rem)]"
+                  >{new Date().toLocaleDateString('pt-BR', {timeZone: 'UTC'})}</p>
+
+                </div>
+
+                <div className="relative h-32">
+                  <p className="text-black whitespace-pre-wrap break-words text-[clamp(0.75rem,1vw,1.5rem)] max-h-20 overflow-y-auto hide-scrollbar pb-1"
+                  >Você pode criar um ToDo clicando em Adicionar +</p>
+
+                  <div className="pointer-events-none absolute bottom-0 left-0 w-full h-4 bg-gradient-to-t from-white/80 to transparent"></div>
+                </div>
+              </div>
+              
+            </div>
+          </div>
+        )}
+
         {/* MODAL DE ADICIONAR */}
 
         {aberto && (

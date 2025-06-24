@@ -11,6 +11,7 @@ interface User {
 export default function Login() {
 
     const[user, setUser] = useState<User>({email: "", password: ""})
+    const[erro, setErro] = useState("")
     
     const router = useRouter()
 
@@ -21,8 +22,8 @@ export default function Login() {
             const token = response.data.access_token
             localStorage.setItem('token', token)
             router.push("/todo")
-        } catch (error) {
-            console.log(error)
+        } catch (error: any) {
+            setErro(error.response?.data?.message || 'Erro de conexão ou servidor indisponível')
         }
     }
     return (
@@ -56,6 +57,9 @@ export default function Login() {
                         />
                         <button className="shadow-md bg-green-500 hover:bg-green-600 text-white p-[12px] h-10 rounded-lg min-w-[10px] flex items-center justify-center"
                         >Entrar</button>
+                        <p className="text-red-500 text-sm">
+                            {erro}
+                        </p>
                         <div className="flex justify-between">
                             <a className="text-blue-600 visited:text-purple-600"
                             href="/register">Cadastrar</a>
