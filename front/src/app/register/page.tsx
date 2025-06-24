@@ -29,16 +29,23 @@ export default function Register () {
             console.log(response)
             router.push("/")
         } catch(error: any) {
-            setError(error.response.data.message)
+            setError(error.response?.data?.message || 'Erro de conexão ou servidor indisponível')
         }
     }
     return (
         <div className="h-full w-full text-black flex items-center justify-center">
             <div className="flex justify-between bg-white h-[60vh] w-[60vw] min-w-[450px] rounded-lg p-8 shadow-lg">
-                <div className="flex flex-col justify-center items-center h-full">
-                    <h1>
-                        texto texto texto
-                    </h1>
+                <div className="flex flex-col justify-start items-start h-full gap-8">
+                    <img className="hover:bg-gray-200 text-white rounded-lg min-w-[15px]"
+                    src="/icons/voltar.png" 
+                    alt="Voltar" 
+                    width={17}
+                    onClick={() => {router.push("/")}}/>
+
+                    <img
+                    src="/img/muhehehe.jpg" 
+                    alt="Cat" 
+                    width={300}/>
                 </div>   
 
                 <form className="flex flex-col h-full gap-4 justify-center"

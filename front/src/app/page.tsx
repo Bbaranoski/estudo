@@ -30,9 +30,10 @@ export default function Login() {
         <div className="h-full w-full text-black flex items-center justify-center">
             <div className="flex justify-between bg-white h-[60vh] w-[60vw] min-w-[450px] rounded-lg p-8 shadow-lg">
                 <div className="flex flex-col justify-center items-center h-full">
-                    <h1>
-                        texto texto texto
-                    </h1>
+                    <img
+                    src="/img/catTongue.jpg" 
+                    alt="Cat" 
+                    width={300}/>
                 </div>
                 <div className="h-full flex flex-col items-end">
                     <form className="flex flex-col h-full gap-4 justify-center"
