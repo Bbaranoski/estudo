@@ -26,6 +26,7 @@ model User {
 
 model Todo {
   id        Int      @id @default(autoincrement())
+  idTodo    Int
   titulo    String
   descricao String
   data      String
@@ -33,4 +34,6 @@ model Todo {
 
   userId    String
   user      User     @relation(fields: [userId], references: [id])
+
+  @@unique([userId, idTodo])
 }

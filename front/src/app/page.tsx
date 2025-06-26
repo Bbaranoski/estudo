@@ -35,11 +35,14 @@ export default function Login() {
                     alt="Cat" 
                     width={300}/>
                 </div>
-                <div className="h-full flex flex-col items-end">
+                <div className="h-full flex flex-col justify-around items-end gap-2">
+                    <h1 className="self-center font-bold pt-6 text-[clamp(1rem,1.5vw,2rem)]"
+                    >Login</h1>
+
                     <form className="flex flex-col h-full gap-4 justify-center"
                     onSubmit={login}
                     action="get"
-                    >
+                    >   
                         <input className="p-2 border rounded w-[20vw] min-w-[200px] shadow-md"
                         type="email"
                         placeholder="Email"
