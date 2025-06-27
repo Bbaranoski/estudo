@@ -39,4 +39,19 @@ body {
 .hide-scrollbar::-webkit-scrollbar {
   display: none;
 }
+
+input[type='number']::-webkit-inner-spin-button,
+input[type='number']::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0
+}
+
+input[type='number'] {
+  -moz-appearance: textfield;
+}
+
+input[type='date']::-webkit-calendar-picker-indicator {
+  filter: invert(0);
+  cursor: pointer;
+}
 @import "tailwindcss";

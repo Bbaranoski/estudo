@@ -8,10 +8,18 @@ export class TodoService {
     constructor(private prisma: PrismaService) {}
 
     async create(userId: string, data: CreateTodoDto) {
+        const lastTodo = await this.prisma.todo.findFirst({
+            where: { userId },
+            orderBy: { idTodo: 'desc' },
+        })
+
+        const nextTodo = lastTodo ? lastTodo.idTodo + 1 : 1
+
         return this.prisma.todo.create({
             data: {
                 ...data,
                 userId,
+                idTodo: nextTodo,
             }
         })
     }
@@ -36,7 +44,7 @@ export class TodoService {
         })
     }
 
-    async filtrar(userId: string, filtros: { titulo?: string, data?: string, id?: string}) {
+    async filtrar(userId: string, filtros: { titulo?: string, data?: string, idTodo?: string}) {
         const where: any = {userId}
 
         if(filtros.titulo) {
@@ -50,8 +58,8 @@ export class TodoService {
             where.data = filtros.data
         }
 
-        if(filtros.id) {
-            where.id = parseInt(filtros.id)
+        if(filtros.idTodo) {
+            where.id = parseInt(filtros.idTodo)
         }
 
         return this.prisma.todo.findMany({

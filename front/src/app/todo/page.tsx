@@ -4,13 +4,13 @@ import api from "@/services/api";
 import '../globals.css'
 
 interface Todo {
-  id: number
+  idTodo: number
   titulo: string
   descricao: string
   data: string
 }
 interface Filtro {
-  id?: string
+  idTodo?: string
   titulo?: string
   descricao?: string
   data?: string
@@ -22,7 +22,7 @@ interface Edita {
 
 export default function Home() {
 
-  const [todo, setTodo] = useState<Todo>({id: 0, titulo: "", descricao: "", data: new Date().toISOString().split("T")[0]})
+  const [todo, setTodo] = useState<Todo>({idTodo: 0, titulo: "", descricao: "", data: new Date().toISOString().split("T")[0]})
   const [lista, setLista] = useState<Todo[]>([])
   const [aberto, setAberto] = useState<boolean>(false)
   const [modalDelete, setModalDelete] = useState<Edita>({index: 0, alterar: false})
@@ -34,7 +34,7 @@ export default function Home() {
   // função que pega o objeto da array para ser editado
   function editaTodo(index: number){
     const alteraObj: Todo = lista[index]
-    setTodo({id: alteraObj.id, titulo: alteraObj.titulo, descricao: alteraObj.descricao, data: alteraObj.data})
+    setTodo({idTodo: alteraObj.idTodo, titulo: alteraObj.titulo, descricao: alteraObj.descricao, data: alteraObj.data})
     setEdita({index: index, alterar: true})
     setAberto(true)
   }
@@ -54,10 +54,11 @@ export default function Home() {
       handleSubmit()
       setAberto(false)
     } else {
-      handeleUpdate(todo.id, todo)
+      handeleUpdate(todo.idTodo, todo)
       setAberto(false)
     }
   }
+
   // faz o crete para o back-end
   const handleSubmit = async () => {
     console.log(todo)
@@ -74,7 +75,7 @@ export default function Home() {
     try {
       const response = await api.get("/todos")
       ordemID(response.data)
-      setTodo({id: 0, titulo: "", descricao: "", data: new Date().toISOString().split("T")[0]})
+      setTodo({idTodo: 0, titulo: "", descricao: "", data: new Date().toISOString().split("T")[0]})
       setAberto(false)
     } catch (error) {
       console.error("deu ruim", error)
@@ -126,8 +127,8 @@ export default function Home() {
   // função ordena
   function ordemID(data: Array<Todo>) {
     let temp = ordem == false 
-    ? [...data].sort((a, b) => a.id - b.id)
-    : [...data].sort((a, b) => b.id - a.id)
+    ? [...data].sort((a, b) => a.idTodo - b.idTodo)
+    : [...data].sort((a, b) => b.idTodo - a.idTodo)
     setLista(temp)
   } 
 
@@ -153,11 +154,11 @@ export default function Home() {
               <div className="flex gap-2 items-center">
                 <input className="bg-white border-1 rounded-lg w-12 h-8 pl-1 text-black shadow-lg"
                   type="number"
-                  value={filtro?.id || ""}
+                  value={filtro?.idTodo || ""}
                   placeholder="ID"
                   maxLength={4}
                   onChange={(e) => {
-                    setFiltro({...filtro, id: e.target.value})
+                    setFiltro({...filtro, idTodo: e.target.value})
                   }}
                 />
                 <input className={`bg-white border-1 rounded-lg h-8 pl-1 text-black shadow-lg ${
@@ -252,10 +253,10 @@ export default function Home() {
         {lista.map((e, index) => (
           <div key={index} className="bg-white flex flex-col items-start justify-start rounded-md min-h-[200px] shadow-lg">
             <div className="flex justify-between w-full pl-6">
-              <p className="pt-2 text-[clamp(0.75rem,1.1vw,1.5rem)] text-black">{e.id}</p>
+              <p className="pt-2 text-[clamp(0.75rem,1.1vw,1.5rem)] text-black">{e.idTodo}</p>
               <div className="flex">
                 <button className="hover:bg-gray-100 text-white p-[8px] rounded-lg min-w-[10px] flex items-center justify-center"
-                    onClick={() => setModalDelete({index: e.id, alterar: true})}
+                    onClick={() => setModalDelete({index: e.idTodo, alterar: true})}
                   ><img
                     src="/icons/trash.png" 
                     alt="Remover" 
