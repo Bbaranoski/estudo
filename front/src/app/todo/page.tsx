@@ -4,6 +4,7 @@ import api from "@/services/api";
 import '../globals.css'
 
 interface Todo {
+  id: number
   idTodo: number
   titulo: string
   descricao: string
@@ -17,12 +18,13 @@ interface Filtro {
 }
 interface Edita {
   index: number
-  alterar: boolean
+  alterar: boolean,
+  idTodo?: number
 }
 
 export default function Home() {
 
-  const [todo, setTodo] = useState<Todo>({idTodo: 0, titulo: "", descricao: "", data: new Date().toISOString().split("T")[0]})
+  const [todo, setTodo] = useState<Todo>({id: 0, idTodo: 0, titulo: "", descricao: "", data: new Date().toISOString().split("T")[0]})
   const [lista, setLista] = useState<Todo[]>([])
   const [aberto, setAberto] = useState<boolean>(false)
   const [modalDelete, setModalDelete] = useState<Edita>({index: 0, alterar: false})
@@ -34,7 +36,7 @@ export default function Home() {
   // função que pega o objeto da array para ser editado
   function editaTodo(index: number){
     const alteraObj: Todo = lista[index]
-    setTodo({idTodo: alteraObj.idTodo, titulo: alteraObj.titulo, descricao: alteraObj.descricao, data: alteraObj.data})
+    setTodo({id: alteraObj.id, idTodo: alteraObj.idTodo, titulo: alteraObj.titulo, descricao: alteraObj.descricao, data: alteraObj.data})
     setEdita({index: index, alterar: true})
     setAberto(true)
   }
@@ -54,7 +56,7 @@ export default function Home() {
       handleSubmit()
       setAberto(false)
     } else {
-      handeleUpdate(todo.idTodo, todo)
+      handeleUpdate(todo.id, todo)
       setAberto(false)
     }
   }
@@ -74,8 +76,9 @@ export default function Home() {
   const fetchTodo = async () => {
     try {
       const response = await api.get("/todos")
+      console.log(response)
       ordemID(response.data)
-      setTodo({idTodo: 0, titulo: "", descricao: "", data: new Date().toISOString().split("T")[0]})
+      setTodo({id: 0, idTodo: 0, titulo: "", descricao: "", data: new Date().toISOString().split("T")[0]})
       setAberto(false)
     } catch (error) {
       console.error("deu ruim", error)
@@ -256,7 +259,7 @@ export default function Home() {
               <p className="pt-2 text-[clamp(0.75rem,1.1vw,1.5rem)] text-black">{e.idTodo}</p>
               <div className="flex">
                 <button className="hover:bg-gray-100 text-white p-[8px] rounded-lg min-w-[10px] flex items-center justify-center"
-                    onClick={() => setModalDelete({index: e.idTodo, alterar: true})}
+                    onClick={() => setModalDelete({index: e.id, alterar: true, idTodo: e.idTodo})}
                   ><img
                     src="/icons/trash.png" 
                     alt="Remover" 
@@ -382,7 +385,7 @@ export default function Home() {
         {modalDelete.alterar && (
           <div className="fixed inset-0 bg-black/50 flex justify-center items-center">
             <div className="bg-white p-6 rounded-lg shadow-lg w-96 h-48 flex flex-col justify-around">
-              <h2 className="text-black font-bold text-[clamp(1rem,1.5vw,2rem)]">Tem certeza que deseja excluir? ({modalDelete.index})</h2>
+              <h2 className="text-black font-bold text-[clamp(1rem,1.5vw,2rem)]">Tem certeza que deseja excluir? ({modalDelete.idTodo})</h2>
               <div className="flex justify-between">
                 <button className="bg-red-500 hover:bg-red-600 text-white p-[10px] rounded-md min-w-[50px] flex items-center justify-center shadow-lg"
                 onClick={() => {
