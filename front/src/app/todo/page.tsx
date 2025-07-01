@@ -331,20 +331,38 @@ export default function Home() {
 
         {aberto && (
           <div className="fixed inset-0 bg-black/50 flex justify-center items-center text-black ">
-            <form className="bg-white p-6 rounded-lg shadow-lg w-96"
+            <form className="flex flex-col justify-around gap-4 bg-white p-6 rounded-lg shadow-lg w-[clamp(300px,40vw,70vw)] h-[clamp(250px,40vh,70vh)]"
             onSubmit={submit}
             >
-              <input className="p-2 border rounded mb-2 w-full"
-                type="text"
-                placeholder="Título"
-                value={todo.titulo}
-                maxLength={11}
-                onChange={(e) => {
-                  setTodo({...todo, titulo: e.target.value})
-                }}
-                required
-              />
-              <textarea className="p-2 border rounded mb-2 w-full min-h-[6rem] resize-none"
+              <div className={`flex justify-between gap-4 ${
+                windowWidth >= 900 ? "flex-row" : "flex-col" 
+              }`}>
+                <input className={`p-2 border rounded text-[clamp(15px,1.5vw,1.5rem)] ${
+                  windowWidth >= 900 ? "w-[15vw]" 
+                  : "w-full"
+                }`}
+                  type="text"
+                  placeholder="Título"
+                  value={todo.titulo}
+                  maxLength={11}
+                  onChange={(e) => {
+                    setTodo({...todo, titulo: e.target.value})
+                  }}
+                  required
+                />
+                <input className={`p-2 border rounded text-[clamp(15px,1.5vw,1.5rem)] ${
+                  windowWidth >= 900 ? "w-[15vw]" 
+                  : "w-full"
+                  }`}
+                  type="date" 
+                  value={todo.data}
+                  onChange={(e) => {
+                    setTodo({...todo, data: e.target.value})
+                  }}
+                  required
+                />
+              </div>
+              <textarea className="p-2 border rounded w-full min-h-[7rem] resize-none text-[clamp(12px,1.25vw,1.25rem)]"
                 placeholder="Descrição"
                 value={todo.descricao}
                 onChange={(e) => {            
@@ -362,15 +380,6 @@ export default function Home() {
                     setEdita({index: 0, alterar: false})
                   }}
                 >X</button>
-
-                <input className="p-2 border rounded mb-2 w-full self-center"
-                  type="date" 
-                  value={todo.data}
-                  onChange={(e) => {
-                    setTodo({...todo, data: e.target.value})
-                  }}
-                  required
-                />
 
                 <button className="bg-green-500 hover:bg-green-600 text-white p-[6px] rounded-md min-w-[40px] h-11 flex items-center justify-center shadow-lg"
                   type="submit"
