@@ -330,60 +330,76 @@ export default function Home() {
         {/* MODAL DE ADICIONAR */}
 
         {aberto && (
-          <div className="fixed inset-0 bg-black/50 flex justify-center items-center text-black ">
-            <form className="flex flex-col justify-around gap-4 bg-white p-6 rounded-lg shadow-lg w-[clamp(300px,40vw,70vw)] h-[clamp(250px,40vh,70vh)]"
+          <div className="fixed inset-0 bg-black/50 flex justify-center items-center text-black">
+            <form className="flex flex-col justify-around gap-4 bg-white p-6 rounded-lg shadow-lg w-[clamp(300px,40vw,60vw)] h-[clamp(500px,40vh,75vh)]"
             onSubmit={submit}
             >
+              <h1 className="self-center text-[clamp(15px,1.5vw,1.5rem)] font-bold"
+              >{edita.alterar ? "Editar" : "Criar"} ToDo</h1>
               <div className={`flex justify-between gap-4 ${
                 windowWidth >= 900 ? "flex-row" : "flex-col" 
               }`}>
-                <input className={`p-2 border rounded text-[clamp(15px,1.5vw,1.5rem)] ${
-                  windowWidth >= 900 ? "w-[15vw]" 
-                  : "w-full"
-                }`}
-                  type="text"
-                  placeholder="Título"
-                  value={todo.titulo}
-                  maxLength={11}
-                  onChange={(e) => {
-                    setTodo({...todo, titulo: e.target.value})
-                  }}
-                  required
-                />
-                <input className={`p-2 border rounded text-[clamp(15px,1.5vw,1.5rem)] ${
-                  windowWidth >= 900 ? "w-[15vw]" 
-                  : "w-full"
-                  }`}
-                  type="date" 
-                  value={todo.data}
-                  onChange={(e) => {
-                    setTodo({...todo, data: e.target.value})
+                <div>
+                  <h2 className="text-[clamp(12px,1.25vw,1.25rem)]"
+                  >Título</h2>
+                  <input className={`p-2 border rounded text-[clamp(12px,1.25vw,1.25rem)] ${
+                    windowWidth >= 900 ? "w-[15vw]" 
+                    : "w-full"
+                    }`}
+                    type="text"
+                    placeholder=""
+                    value={todo.titulo}
+                    maxLength={11}
+                    onChange={(e) => {
+                      setTodo({...todo, titulo: e.target.value})
+                    }}
+                    required
+                  />
+                </div>
+    
+                <div>
+                  <h2 className="text-[clamp(12px,1.25vw,1.25rem)]"
+                  >Data</h2>
+                  <input className={`p-2 border rounded text-[clamp(12px,1.25vw,1.25rem)] ${
+                    windowWidth >= 900 ? "w-[15vw]" 
+                    : "w-full"
+                    }`}
+                    type="date" 
+                    value={todo.data}
+                    onChange={(e) => {
+                      setTodo({...todo, data: e.target.value})
+                    }}
+                    required
+                  />
+                </div>
+              </div>
+
+              <div>
+                <h2 className="text-[clamp(12px,1.25vw,1.25rem)]"
+                >Descrição</h2>
+                <textarea className="p-2 border rounded w-full min-h-[9rem] resize-none text-[clamp(12px,1.25vw,1.25rem)]"
+                  placeholder=""
+                  value={todo.descricao}
+                  onChange={(e) => {            
+                    setTodo({...todo, descricao: e.target.value}) 
                   }}
                   required
                 />
               </div>
-              <textarea className="p-2 border rounded w-full min-h-[7rem] resize-none text-[clamp(12px,1.25vw,1.25rem)]"
-                placeholder="Descrição"
-                value={todo.descricao}
-                onChange={(e) => {            
-                  setTodo({...todo, descricao: e.target.value}) 
-                }}
-                required
-              />
 
-              <div className="flex gap-2">
-                <button className="bg-red-500 hover:bg-red-600 text-white p-[6px] rounded-md min-w-[40px] h-11 flex items-center justify-center shadow-lg"
+              <div className="flex gap-2 justify-end">
+                <button className="bg-green-500 hover:bg-green-600 text-white p-[1rem] rounded-md min-w-[40px] h-11 flex items-center justify-center shadow-lg"
+                  type="submit"
+                >CONFIRMAR</button>
+
+                <button className="bg-red-500 hover:bg-red-600 text-white p-[1rem] rounded-md min-w-[40px] h-11 flex items-center justify-center shadow-lg"
                   type="button"
                   onClick={() => {
                     setTodo({...todo, titulo: "", descricao: "", data: new Date().toISOString().split("T")[0]})
                     setAberto(false)
                     setEdita({index: 0, alterar: false})
                   }}
-                >X</button>
-
-                <button className="bg-green-500 hover:bg-green-600 text-white p-[6px] rounded-md min-w-[40px] h-11 flex items-center justify-center shadow-lg"
-                  type="submit"
-                >V</button>
+                >CANCELAR</button>
               </div>
             </form>
           </div>
